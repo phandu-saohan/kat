@@ -1,0 +1,9 @@
+node_modules
+.env
+data/kat.sqlite-journal
+*.log
+.vercel
+kat.html.html
+scratch/
+
+

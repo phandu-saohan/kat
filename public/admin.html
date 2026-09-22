@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K.A.T 2026 · CMS Quản Trị Đăng Ký & Người Dùng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/custom.css">
+</head>
+<body>
+
+  <!-- ========================================================
+       AUTH WRAPPER (LOGIN SCREEN)
+  ======================================================== -->
+  <div id="authWrapper" class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <span class="auth-logo-badge">K.A.T 2026</span>
+        <span style="font-weight: 800; font-size: 1.1rem; color: #ffffff; letter-spacing: 0.05em;">KBIT CMS</span>
+      </div>
+      <h2 style="font-size: 1.3rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem;">Đăng Nhập Quản Trị</h2>
+      <p style="font-size: 0.85rem; color: var(--admin-text-muted); text-align: center; margin-bottom: 1.75rem;">
+        Hệ thống theo dõi và quản lý dữ liệu đăng ký hội thảo K.A.T 2026
+      </p>
+
+      <form id="adminLoginForm">
+        <div class="kat-form-group">
+          <label class="kat-form-label">Tài khoản</label>
+          <input type="text" id="loginUsername" class="kat-input" placeholder="Tài khoản admin" value="admin" required>
+        </div>
+
+        <div class="kat-form-group">
+          <label class="kat-form-label">Mật khẩu</label>
+          <input type="password" id="loginPassword" class="kat-input" placeholder="Mật khẩu quản trị" value="kat2026@admin" required>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem; margin-top: 1rem; font-size: 0.95rem;">
+          Đăng Nhập Hệ Thống
+        </button>
+      </form>
+
+      <div style="margin-top: 1.5rem; text-align: center;">
+        <a href="/" style="font-size: 0.8rem; color: var(--admin-cyan); text-decoration: none;">&larr; Quay lại Landing Page K.A.T 2026</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       ADMIN DASHBOARD LAYOUT
+  ======================================================== -->
+  <div id="adminLayout" class="admin-layout" style="display: none;">
+    
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand">
+        <span class="auth-logo-badge" style="font-size: 0.9rem; padding: 0.35rem 0.6rem;">K.A.T</span>
+        <div>
+          <h3 style="font-size: 0.95rem; font-weight: 800; color: #ffffff; line-height: 1.2;">KBIT CMS</h3>
+          <span style="font-size: 0.7rem; color: var(--admin-gold);">Hội Thảo K.A.T 2026</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a class="nav-item active" data-tab="tabOverview">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Tổng Quan
+        </a>
+        <a class="nav-item" data-tab="tabRegistrations">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7.5" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          Đăng Ký Tham Dự
+          <span id="badgePendingCount" class="badge badge-pending" style="margin-left: auto; font-size: 0.7rem;">0</span>
+        </a>
+        <a class="nav-item" data-tab="tabNewsletters">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Nhận Tin Email
+        </a>
+        <a class="nav-item" data-tab="tabSupport">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Hỗ Trợ Trực Tuyến
+          <span id="badgeSupportNewCount" class="badge badge-new" style="margin-left: auto; font-size: 0.7rem;">0</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="/" target="_blank" class="btn-secondary" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; text-decoration: none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Xem Trang
+        </a>
+        <button id="adminLogoutBtn" class="btn-action delete" title="Đăng xuất">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <h2 id="pageHeading" style="font-size: 1.25rem; font-weight: 800;">Tổng Quan Dữ Liệu</h2>
+        </div>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button id="btnRefreshData" class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Làm Mới
+          </button>
+          <div style="font-size: 0.85rem; color: var(--admin-text-muted); display: flex; align-items: center; gap: 0.5rem;">
+            <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--admin-success);"></div>
+            <span id="adminLoggedName">Ban Tổ Chức K.A.T</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="admin-body">
+        
+        <!-- ==========================================
+             TAB 1: OVERVIEW
+        ========================================== -->
+        <section id="tabOverview" class="tab-section">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-info">
+                <h4>Tổng Đăng Ký Tham Dự</h4>
+                <div class="stat-number" id="statTotalReg">0</div>
+              </div>
+              <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+            </div>
+
+            <div class="stat-card orange">
+              <div class="stat-info">
+                <h4>Chờ Xử Lý & Liên Hệ</h4>
+                <div class="stat-number" id="statPendingReg" style="color: #ff9f43;">0</div>
+              </div>
+              <div class="stat-icon" style="color: #ff9f43;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+            </div>
+
+            <div class="stat-card green">
+              <div class="stat-info">
+                <h4>Đã Xác Nhận Vé</h4>
+                <div class="stat-number" id="statConfirmedReg" style="color: #00d084;">0</div>
+              </div>
+              <div class="stat-icon" style="color: #00d084;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+            </div>
+
+            <div class="stat-card gold">
+              <div class="stat-info">
+                <h4>Nhận Tin Bản Tin Email</h4>
+                <div class="stat-number" id="statTotalNewsletter" style="color: #e3c879;">0</div>
+              </div>
+              <div class="stat-icon" style="color: #e3c879;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Registrations & Support in Overview -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 1.5rem;">
+            <div class="content-card">
+              <div class="content-header">
+                <h3 class="content-title">Đăng Ký Tham Dự Mới Nhất</h3>
+                <button class="btn-secondary" onclick="switchTab('tabRegistrations')" style="font-size: 0.8rem;">Xem Tất Cả</button>
+              </div>
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Mã ĐK</th>
+                      <th>Đại Biểu</th>
+                      <th>Chuyên Khoa</th>
+                      <th>Trạng Thái</th>
+                    </tr>
+                  </thead>
+                  <tbody id="overviewRecentRegBody">
+                    <tr><td colspan="4" style="text-align:center; color: var(--admin-text-muted);">Đang tải...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="content-card">
+              <div class="content-header">
+                <h3 class="content-title">Yêu Cầu Hỗ Trợ Gần Đây</h3>
+                <button class="btn-secondary" onclick="switchTab('tabSupport')" style="font-size: 0.8rem;">Xem Tất Cả</button>
+              </div>
+              <div class="table-responsive">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Mã</th>
+                      <th>Người Gửi</th>
+                      <th>Chủ Đề</th>
+                      <th>Trạng Thái</th>
+                    </tr>
+                  </thead>
+                  <tbody id="overviewRecentSupportBody">
+                    <tr><td colspan="4" style="text-align:center; color: var(--admin-text-muted);">Đang tải...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 2: REGISTRATIONS MANAGEMENT
+        ========================================== -->
+        <section id="tabRegistrations" class="tab-section" style="display: none;">
+          <div class="content-card">
+            <div class="content-header">
+              <div>
+                <h3 class="content-title">Danh Sách Đại Biểu Đăng Ký Tham Dự</h3>
+                <p style="font-size: 0.8rem; color: var(--admin-text-muted); margin-top: 0.2rem;">
+                  Quản lý hồ sơ bác sĩ, đại biểu, theo dõi xác nhận vé và ghi chú nội bộ.
+                </p>
+              </div>
+
+              <div class="filters-bar">
+                <input type="text" id="regSearchInput" class="admin-search-input" placeholder="Tìm tên, SĐT, email, mã ĐK...">
+                
+                <select id="regStatusFilter" class="admin-select">
+                  <option value="all">Tất cả trạng thái</option>
+                  <option value="pending">Chờ xử lý</option>
+                  <option value="contacted">Đã liên hệ</option>
+                  <option value="confirmed">Đã xác nhận</option>
+                  <option value="cancelled">Đã hủy</option>
+                </select>
+
+                <button id="btnExportRegistrations" class="btn-gold">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Xuất Excel (CSV)
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Mã ĐK</th>
+                    <th>Họ và Tên</th>
+                    <th>Liên Hệ (SĐT / Email)</th>
+                    <th>Đơn Vị & Chuyên Khoa</th>
+                    <th>Phiên Quan Tâm</th>
+                    <th>Thời Gian</th>
+                    <th>Trạng Thái</th>
+                    <th style="text-align: right;">Hành Động</th>
+                  </tr>
+                </thead>
+                <tbody id="registrationsTableBody">
+                  <tr><td colspan="8" style="text-align: center; color: var(--admin-text-muted);">Đang tải dữ liệu...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 3: NEWSLETTER MANAGEMENT
+        ========================================== -->
+        <section id="tabNewsletters" class="tab-section" style="display: none;">
+          <div class="content-card">
+            <div class="content-header">
+              <div>
+                <h3 class="content-title">Danh Sách Đăng Ký Nhận Bản Tin</h3>
+                <p style="font-size: 0.8rem; color: var(--admin-text-muted); margin-top: 0.2rem;">
+                  Email người dùng đăng ký nhận tài liệu chuyên môn và tin tức từ KBIT.
+                </p>
+              </div>
+
+              <div class="filters-bar">
+                <input type="text" id="newsletterSearchInput" class="admin-search-input" placeholder="Tìm theo email...">
+                
+                <button id="btnExportNewsletters" class="btn-gold">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Xuất Excel (CSV)
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Email Nhận Tin</th>
+                    <th>Nguồn Đăng Ký</th>
+                    <th>Trạng Thái</th>
+                    <th>Thời Gian Đăng Ký</th>
+                    <th style="text-align: right;">Hành Động</th>
+                  </tr>
+                </thead>
+                <tbody id="newslettersTableBody">
+                  <tr><td colspan="6" style="text-align: center; color: var(--admin-text-muted);">Đang tải dữ liệu...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             TAB 4: SUPPORT TICKETS MANAGEMENT
+        ========================================== -->
+        <section id="tabSupport" class="tab-section" style="display: none;">
+          <div class="content-card">
+            <div class="content-header">
+              <div>
+                <h3 class="content-title">Danh Sách Yêu Cầu Hỗ Trợ Trực Tuyến</h3>
+                <p style="font-size: 0.8rem; color: var(--admin-text-muted); margin-top: 0.2rem;">
+                  Tin nhắn, câu hỏi từ khách hàng gửi qua widget hỗ trợ trực tuyến.
+                </p>
+              </div>
+
+              <div class="filters-bar">
+                <input type="text" id="supportSearchInput" class="admin-search-input" placeholder="Tìm mã, họ tên, email, nội dung...">
+                
+                <select id="supportStatusFilter" class="admin-select">
+                  <option value="all">Tất cả trạng thái</option>
+                  <option value="new">Mới tiếp nhận</option>
+                  <option value="processing">Đang xử lý</option>
+                  <option value="resolved">Đã giải quyết</option>
+                </select>
+
+                <button id="btnExportSupport" class="btn-gold">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Xuất Excel (CSV)
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Mã Ticket</th>
+                    <th>Họ và Tên</th>
+                    <th>Liên Hệ (SĐT / Email)</th>
+                    <th>Chủ Đề</th>
+                    <th>Nội Dung Câu Hỏi</th>
+                    <th>Thời Gian</th>
+                    <th>Trạng Thái</th>
+                    <th style="text-align: right;">Hành Động</th>
+                  </tr>
+                </thead>
+                <tbody id="supportTableBody">
+                  <tr><td colspan="8" style="text-align: center; color: var(--admin-text-muted);">Đang tải dữ liệu...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================================
+       MODAL: CHI TIẾT & CẬP NHẬT ĐĂNG KÝ
+  ======================================================== -->
+  <div class="admin-modal-overlay" id="regDetailModal">
+    <div class="admin-modal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.8rem;">
+        <div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #ffffff;">Chi Tiết Hồ Sơ Đăng Ký</h3>
+          <span id="modalRegCodeBadge" class="badge badge-pending" style="margin-top: 0.3rem;">KAT-0000</span>
+        </div>
+        <button class="btn-action" onclick="closeAdminModal('regDetailModal')">&times;</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; font-size: 0.9rem;">
+        <div><strong style="color: var(--admin-cyan);">Họ và tên:</strong> <div id="modalRegName"></div></div>
+        <div><strong style="color: var(--admin-cyan);">Số điện thoại:</strong> <div id="modalRegPhone"></div></div>
+        <div><strong style="color: var(--admin-cyan);">Email:</strong> <div id="modalRegEmail"></div></div>
+        <div><strong style="color: var(--admin-cyan);">Thời gian ĐK:</strong> <div id="modalRegDate"></div></div>
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Đơn vị công tác</label>
+        <input type="text" id="modalRegOrg" class="kat-input">
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Chuyên khoa</label>
+        <input type="text" id="modalRegSpecialty" class="kat-input">
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Phiên quan tâm</label>
+        <div id="modalRegSessions" style="padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem; font-size: 0.85rem; color: #c6efff;"></div>
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Ghi chú của đại biểu</label>
+        <div id="modalRegNotes" style="padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem; font-size: 0.85rem; color: #c6efff; font-style: italic;"></div>
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Trạng thái xử lý</label>
+        <select id="modalRegStatus" class="kat-select">
+          <option value="pending">Chờ xử lý (Pending)</option>
+          <option value="contacted">Đã liên hệ tư vấn (Contacted)</option>
+          <option value="confirmed">Đã xác nhận tham dự (Confirmed)</option>
+          <option value="cancelled">Hủy tham dự (Cancelled)</option>
+        </select>
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Ghi chú nội bộ của Ban tổ chức</label>
+        <textarea id="modalRegAdminNotes" class="kat-textarea" rows="2" placeholder="Ví dụ: Đã gọi điện ngày 22/09, BS cần cấp chứng chỉ CME..."></textarea>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+        <button class="btn-secondary" onclick="closeAdminModal('regDetailModal')">Đóng</button>
+        <button id="btnSaveRegModal" class="btn-primary">Lưu Thay Đổi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       MODAL: CHI TIẾT & XỬ LÝ YÊU CẦU HỖ TRỢ
+  ======================================================== -->
+  <div class="admin-modal-overlay" id="supportDetailModal">
+    <div class="admin-modal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.8rem;">
+        <div>
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: #ffffff;">Chi Tiết Yêu Cầu Hỗ Trợ</h3>
+          <span id="modalSupportCodeBadge" class="badge badge-new" style="margin-top: 0.3rem;">SUP-0000</span>
+        </div>
+        <button class="btn-action" onclick="closeAdminModal('supportDetailModal')">&times;</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; font-size: 0.9rem;">
+        <div><strong style="color: var(--admin-cyan);">Người gửi:</strong> <div id="modalSupportName"></div></div>
+        <div><strong style="color: var(--admin-cyan);">Điện thoại:</strong> <div id="modalSupportPhone"></div></div>
+        <div><strong style="color: var(--admin-cyan);">Email:</strong> <div id="modalSupportEmail"></div></div>
+        <div><strong style="color: var(--admin-cyan);">Thời gian:</strong> <div id="modalSupportDate"></div></div>
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Chủ đề tư vấn</label>
+        <div id="modalSupportTopic" style="padding: 0.6rem 0.8rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem; font-size: 0.9rem; font-weight: 600; color: #59d7ff;"></div>
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Nội dung câu hỏi</label>
+        <div id="modalSupportMessage" style="padding: 0.8rem; background: rgba(255,255,255,0.05); border-radius: 0.5rem; font-size: 0.9rem; color: #ffffff; line-height: 1.5;"></div>
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Trạng thái xử lý</label>
+        <select id="modalSupportStatus" class="kat-select">
+          <option value="new">Mới tiếp nhận (New)</option>
+          <option value="processing">Đang hỗ trợ (Processing)</option>
+          <option value="resolved">Đã giải quyết (Resolved)</option>
+        </select>
+      </div>
+
+      <div class="kat-form-group">
+        <label class="kat-form-label">Ghi chú nội bộ</label>
+        <textarea id="modalSupportAdminNotes" class="kat-textarea" rows="2" placeholder="Ghi chú kết quả tư vấn, giải đáp cho khách..."></textarea>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem;">
+        <button class="btn-secondary" onclick="closeAdminModal('supportDetailModal')">Đóng</button>
+        <button id="btnSaveSupportModal" class="btn-primary">Lưu Thay Đổi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Script -->
+  <script src="/js/admin.js"></script>
+</body>
+</html>

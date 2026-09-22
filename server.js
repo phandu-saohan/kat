@@ -1,0 +1,401 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const path = require('node:path');
+const db = require('./db/database');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Simple Auth Middleware for Admin APIs
+const ADMIN_TOKEN_KEY = process.env.ADMIN_TOKEN_KEY || 'KAT_ADMIN_SESSION_TOKEN_2026';
+
+function adminAuth(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ success: false, message: 'Vui lòng đăng nhập quyền quản trị' });
+  }
+  const token = authHeader.split(' ')[1];
+  if (token !== ADMIN_TOKEN_KEY) {
+    return res.status(403).json({ success: false, message: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn' });
+  }
+  next();
+}
+
+// ==========================================
+// PUBLIC CLIENT APIS
+// ==========================================
+
+// 1. Register for K.A.T 2026
+app.post('/api/register', async (req, res) => {
+  try {
+    const { full_name, phone, email, organization, specialty, interested_sessions, notes } = req.body;
+
+    if (!full_name || !phone || !email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Vui lòng điền đầy đủ Họ và tên, Số điện thoại và Email.'
+      });
+    }
+
+    // Basic email check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Địa chỉ email không đúng định dạng.'
+      });
+    }
+
+    const registration = await db.createRegistration({
+      full_name,
+      phone,
+      email,
+      organization,
+      specialty,
+      interested_sessions,
+      notes
+    });
+
+    return res.json({
+      success: true,
+      message: 'Đăng ký tham dự K.A.T 2026 thành công!',
+      registration
+    });
+  } catch (err) {
+    console.error('Error in /api/register:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Có lỗi xảy ra khi lưu thông tin đăng ký. Vui lòng thử lại.'
+    });
+  }
+});
+
+// 2. Newsletter Subscription
+app.post('/api/newsletter', async (req, res) => {
+  try {
+    const { email, source } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Vui lòng nhập địa chỉ email.'
+      });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Địa chỉ email không hợp lệ.'
+      });
+    }
+
+    const result = await db.subscribeNewsletter(email, source);
+    if (result.already_subscribed) {
+      return res.json({
+        success: true,
+        message: 'Email này đã có trong danh sách nhận bản tin của KBIT!',
+        subscriber: result
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Đăng ký nhận thông tin và tài liệu khoa học thành công!',
+      subscriber: result
+    });
+  } catch (err) {
+    console.error('Error in /api/newsletter:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Lỗi khi đăng ký nhận tin. Vui lòng thử lại.'
+    });
+  }
+});
+
+// 3. Online Support Request
+app.post('/api/support', async (req, res) => {
+  try {
+    const { full_name, phone, email, topic, message } = req.body;
+    if (!full_name || !email || !message) {
+      return res.status(400).json({
+        success: false,
+        message: 'Vui lòng cung cấp Họ tên, Email và Nội dung cần hỗ trợ.'
+      });
+    }
+
+    const ticket = await db.createSupportTicket({
+      full_name,
+      phone,
+      email,
+      topic,
+      message
+    });
+
+    return res.json({
+      success: true,
+      message: 'Yêu cầu hỗ trợ đã được tiếp nhận. Ban tổ chức sẽ phản hồi sớm nhất!',
+      ticket
+    });
+  } catch (err) {
+    console.error('Error in /api/support:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Không thể gửi yêu cầu hỗ trợ lúc này. Vui lòng thử lại hoặc gọi hotline.'
+    });
+  }
+});
+
+// ==========================================
+// ADMIN CMS APIS
+// ==========================================
+
+// Admin Login
+app.post('/api/admin/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const admin = await db.verifyAdmin(username, password);
+
+    if (!admin) {
+      return res.status(401).json({
+        success: false,
+        message: 'Tài khoản hoặc mật khẩu không chính xác.'
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: 'Đăng nhập thành công!',
+      token: ADMIN_TOKEN_KEY,
+      user: admin
+    });
+  } catch (err) {
+    console.error('Error in /api/admin/login:', err);
+    return res.status(500).json({ success: false, message: 'Lỗi đăng nhập hệ thống.' });
+  }
+});
+
+// Admin Stats
+app.get('/api/admin/stats', adminAuth, async (req, res) => {
+  try {
+    const stats = await db.getDashboardStats();
+    res.json({ success: true, stats });
+  } catch (err) {
+    console.error('Error in /api/admin/stats:', err);
+    res.status(500).json({ success: false, message: 'Lỗi lấy thống kê.' });
+  }
+});
+
+// Admin Registrations list
+app.get('/api/admin/registrations', adminAuth, async (req, res) => {
+  try {
+    const { status, search } = req.query;
+    const list = await db.getRegistrations({ status, search });
+    res.json({ success: true, data: list });
+  } catch (err) {
+    console.error('Error in /api/admin/registrations:', err);
+    res.status(500).json({ success: false, message: 'Lỗi tải danh sách đăng ký.' });
+  }
+});
+
+// Update Registration
+app.patch('/api/admin/registrations/:id', adminAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const updated = await db.updateRegistration(id, req.body);
+    if (!updated) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy thông tin đăng ký.' });
+    }
+    res.json({ success: true, data: updated });
+  } catch (err) {
+    console.error('Error in PATCH /api/admin/registrations:', err);
+    res.status(500).json({ success: false, message: 'Lỗi cập nhật đăng ký.' });
+  }
+});
+
+// Delete Registration
+app.delete('/api/admin/registrations/:id', adminAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    await db.deleteRegistration(id);
+    res.json({ success: true, message: 'Đã xóa đăng ký thành công.' });
+  } catch (err) {
+    console.error('Error in DELETE /api/admin/registrations:', err);
+    res.status(500).json({ success: false, message: 'Lỗi xóa đăng ký.' });
+  }
+});
+
+// Admin Newsletters list
+app.get('/api/admin/newsletters', adminAuth, async (req, res) => {
+  try {
+    const { search } = req.query;
+    const list = await db.getNewsletters({ search });
+    res.json({ success: true, data: list });
+  } catch (err) {
+    console.error('Error in /api/admin/newsletters:', err);
+    res.status(500).json({ success: false, message: 'Lỗi tải danh sách nhận tin.' });
+  }
+});
+
+// Delete Newsletter
+app.delete('/api/admin/newsletters/:id', adminAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    await db.deleteNewsletter(id);
+    res.json({ success: true, message: 'Đã xóa người nhận tin.' });
+  } catch (err) {
+    console.error('Error in DELETE /api/admin/newsletters:', err);
+    res.status(500).json({ success: false, message: 'Lỗi xóa người nhận tin.' });
+  }
+});
+
+// Admin Support tickets list
+app.get('/api/admin/support-tickets', adminAuth, async (req, res) => {
+  try {
+    const { status, search } = req.query;
+    const list = await db.getSupportTickets({ status, search });
+    res.json({ success: true, data: list });
+  } catch (err) {
+    console.error('Error in /api/admin/support-tickets:', err);
+    res.status(500).json({ success: false, message: 'Lỗi tải danh sách hỗ trợ.' });
+  }
+});
+
+// Update Support ticket
+app.patch('/api/admin/support-tickets/:id', adminAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const updated = await db.updateSupportTicket(id, req.body);
+    if (!updated) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy yêu cầu hỗ trợ.' });
+    }
+    res.json({ success: true, data: updated });
+  } catch (err) {
+    console.error('Error in PATCH /api/admin/support-tickets:', err);
+    res.status(500).json({ success: false, message: 'Lỗi cập nhật hỗ trợ.' });
+  }
+});
+
+// Delete Support ticket
+app.delete('/api/admin/support-tickets/:id', adminAuth, async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    await db.deleteSupportTicket(id);
+    res.json({ success: true, message: 'Đã xóa yêu cầu hỗ trợ.' });
+  } catch (err) {
+    console.error('Error in DELETE /api/admin/support-tickets:', err);
+    res.status(500).json({ success: false, message: 'Lỗi xóa yêu cầu hỗ trợ.' });
+  }
+});
+
+// Export CSV with UTF-8 BOM for Excel
+app.get('/api/admin/export/:type', adminAuth, async (req, res) => {
+  try {
+    const { type } = req.params;
+    let csvContent = '\uFEFF'; // UTF-8 BOM for Excel
+
+    if (type === 'registrations') {
+      const items = await db.getRegistrations();
+      csvContent += 'Mã ĐK,Họ và tên,Số điện thoại,Email,Đơn vị công tác,Chuyên khoa,Phiên quan tâm,Ghi chú khách,Ghi chú nội bộ,Trạng thái,Thời gian đăng ký\n';
+      items.forEach(item => {
+        const row = [
+          `"${item.reg_code || ''}"`,
+          `"${(item.full_name || '').replace(/"/g, '""')}"`,
+          `"${item.phone || ''}"`,
+          `"${item.email || ''}"`,
+          `"${(item.organization || '').replace(/"/g, '""')}"`,
+          `"${(item.specialty || '').replace(/"/g, '""')}"`,
+          `"${(item.interested_sessions || '').replace(/"/g, '""')}"`,
+          `"${(item.notes || '').replace(/"/g, '""')}"`,
+          `"${(item.admin_notes || '').replace(/"/g, '""')}"`,
+          `"${item.status || ''}"`,
+          `"${item.created_at || ''}"`
+        ];
+        csvContent += row.join(',') + '\n';
+      });
+
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename="KAT_Registrations_${Date.now()}.csv"`);
+      return res.send(csvContent);
+    }
+
+    if (type === 'newsletters') {
+      const items = await db.getNewsletters();
+      csvContent += 'ID,Email,Nguồn,Trạng thái,Thời gian đăng ký\n';
+      items.forEach(item => {
+        const row = [
+          item.id,
+          `"${item.email || ''}"`,
+          `"${item.source || ''}"`,
+          `"${item.status || ''}"`,
+          `"${item.created_at || ''}"`
+        ];
+        csvContent += row.join(',') + '\n';
+      });
+
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename="KAT_Newsletters_${Date.now()}.csv"`);
+      return res.send(csvContent);
+    }
+
+    if (type === 'support') {
+      const items = await db.getSupportTickets();
+      csvContent += 'Mã Ticket,Họ và tên,Số điện thoại,Email,Chủ đề,Nội dung tin nhắn,Ghi chú nội bộ,Trạng thái,Thời gian gửi\n';
+      items.forEach(item => {
+        const row = [
+          `"${item.ticket_code || ''}"`,
+          `"${(item.full_name || '').replace(/"/g, '""')}"`,
+          `"${item.phone || ''}"`,
+          `"${item.email || ''}"`,
+          `"${(item.topic || '').replace(/"/g, '""')}"`,
+          `"${(item.message || '').replace(/"/g, '""')}"`,
+          `"${(item.admin_notes || '').replace(/"/g, '""')}"`,
+          `"${item.status || ''}"`,
+          `"${item.created_at || ''}"`
+        ];
+        csvContent += row.join(',') + '\n';
+      });
+
+      res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+      res.setHeader('Content-Disposition', `attachment; filename="KAT_Support_Tickets_${Date.now()}.csv"`);
+      return res.send(csvContent);
+    }
+
+    return res.status(400).json({ success: false, message: 'Loại dữ liệu xuất không hợp lệ' });
+  } catch (err) {
+    console.error('Error exporting CSV:', err);
+    res.status(500).json({ success: false, message: 'Lỗi xuất file CSV' });
+  }
+});
+
+// Admin Route
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// Fallback to index.html for root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Export app for Vercel / serverless functions
+module.exports = app;
+
+// Start Server in local/standalone environment
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(`  K.A.T 2026 Server & CMS running on port ${PORT}`);
+    console.log(`  - Landing Page: http://localhost:${PORT}`);
+    console.log(`  - CMS Dashboard: http://localhost:${PORT}/admin`);
+    console.log(`  - Default Admin Account: admin / kat2026@admin`);
+    console.log(`====================================================`);
+  });
+}

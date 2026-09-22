@@ -1,0 +1,816 @@
+/* ========================================================
+   K.A.T 2026 LUXURY MEDICAL REGISTRATION FORM & WIDGETS
+   Ultra-Professional, High-Contrast & Mobile-Optimized
+   System Width Matching & Compact Padding
+======================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Fix Vietnamese font rendering across all typography and buttons */
+html, body, button, input, select, textarea, optgroup, a, p, span, strong, em, b, i, h1, h2, h3, h4, h5, h6, label {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --kat-navy-deep: #050e1f;
+  --kat-card-bg: rgba(9, 20, 42, 0.98);
+  --kat-card-border: rgba(89, 215, 255, 0.35);
+  --kat-cyan: #59d7ff;
+  --kat-cyan-light: #c6efff;
+  --kat-cyan-glow: rgba(89, 215, 255, 0.3);
+  --kat-gold: #C5A15A;
+  --kat-gold-light: #f5d78e;
+  --kat-text-dim: #92b8d9;
+  --wp--preset--font-family--inter: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Highlight flash when user clicks register buttons anywhere */
+@keyframes formGlowFlash {
+  0% {
+    box-shadow: 0 0 0 0 rgba(89, 215, 255, 0.8), 0 20px 60px rgba(0, 0, 0, 0.7);
+    border-color: #59d7ff;
+  }
+  50% {
+    box-shadow: 0 0 45px 6px rgba(89, 215, 255, 0.55), 0 20px 60px rgba(0, 0, 0, 0.7);
+    border-color: #59d7ff;
+  }
+  100% {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 174, 255, 0.15);
+    border-color: var(--kat-card-border);
+  }
+}
+
+.kat-form-flash {
+  animation: formGlowFlash 1.4s ease-out;
+}
+
+/* ========================================================
+   REGISTRATION WRAPPER & CARD (MATCHING SYSTEM WIDTH)
+======================================================== */
+.kat-inline-reg-wrapper {
+  margin: 3rem auto 1.5rem;
+  width: 100% !important;
+  max-width: 1180px !important; /* System width */
+  box-sizing: border-box;
+}
+
+.kat-reg-card {
+  background: linear-gradient(175deg, rgba(12, 25, 52, 0.99) 0%, rgba(6, 15, 33, 0.99) 100%) !important;
+  border: 1.5px solid var(--kat-card-border) !important;
+  border-radius: 1.5rem !important;
+  padding: 1.75rem 2.25rem !important; /* Reduced, compact padding */
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 174, 255, 0.15) !important;
+  text-align: left !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+@media (max-width: 768px) {
+  .kat-inline-reg-wrapper {
+    margin: 1.75rem auto 1rem;
+    padding: 0;
+  }
+  .kat-reg-card {
+    padding: 1.25rem 1rem !important; /* Reduced padding on mobile */
+    border-radius: 1.15rem !important;
+  }
+}
+
+.kat-reg-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #C5A15A 0%, #59d7ff 50%, #1f95ff 100%);
+}
+
+/* Header Area inside Card */
+.kat-reg-head {
+  text-align: center;
+  border-bottom: 1px solid rgba(89, 215, 255, 0.16);
+  padding-bottom: 1.15rem;
+  margin-bottom: 1.35rem;
+}
+
+.kat-reg-badge-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--kat-gold-light);
+  background: rgba(197, 161, 90, 0.12);
+  border: 1px solid rgba(197, 161, 90, 0.35);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  margin-bottom: 0.65rem;
+}
+
+.kat-reg-head h3 {
+  font-size: clamp(1.35rem, 3vw, 1.85rem) !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  line-height: 1.25 !important;
+  margin: 0 0 0.45rem 0 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.kat-reg-head p {
+  font-size: 0.9rem !important;
+  color: var(--kat-cyan-light) !important;
+  max-width: 720px;
+  margin: 0 auto !important;
+  line-height: 1.5 !important;
+}
+
+.kat-reg-meta-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem 1.25rem;
+  margin-top: 0.85rem;
+  font-size: 0.8rem;
+  color: #ffffff;
+}
+
+.kat-reg-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.kat-reg-meta-item svg {
+  color: var(--kat-cyan);
+  flex-shrink: 0;
+}
+
+/* ========================================================
+   SECTION DIVIDERS IN FORM
+======================================================== */
+.kat-form-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--kat-cyan);
+  margin: 1.25rem 0 0.85rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px dashed rgba(89, 215, 255, 0.2);
+}
+
+.kat-form-section-title:first-of-type {
+  margin-top: 0;
+}
+
+.kat-step-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(89, 215, 255, 0.18);
+  border: 1px solid var(--kat-cyan);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+/* ========================================================
+   FORM GRID & INPUTS
+======================================================== */
+.kat-grid-2 {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0.9rem !important;
+  margin-bottom: 0.9rem !important;
+}
+
+@media (max-width: 680px) {
+  .kat-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 0.85rem !important;
+    margin-bottom: 0.85rem !important;
+  }
+}
+
+.kat-input-group {
+  position: relative;
+  box-sizing: border-box;
+}
+
+.kat-label {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  font-size: 0.82rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  margin-bottom: 0.35rem !important;
+  letter-spacing: 0.02em !important;
+}
+
+.kat-label span.req {
+  color: #ff5252 !important;
+  font-weight: 800;
+  margin-left: 3px;
+}
+
+.kat-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.kat-input-icon {
+  position: absolute;
+  left: 0.9rem;
+  color: var(--kat-cyan);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.kat-field {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  height: 48px !important;
+  padding: 0 0.9rem 0 2.65rem !important;
+  background: rgba(7, 18, 38, 0.85) !important;
+  border: 1.5px solid rgba(89, 215, 255, 0.32) !important;
+  border-radius: 0.75rem !important;
+  color: #ffffff !important;
+  font-size: 16px !important; /* 16px prevents iOS Safari zoom */
+  font-family: inherit !important;
+  outline: none !important;
+  transition: all 0.2s ease !important;
+  -webkit-appearance: none !important;
+}
+
+.kat-field:focus {
+  border-color: #59d7ff !important;
+  background: rgba(10, 27, 58, 0.98) !important;
+  box-shadow: 0 0 16px rgba(89, 215, 255, 0.4) !important;
+}
+
+.kat-field::placeholder {
+  color: rgba(198, 239, 255, 0.45) !important;
+  font-size: 0.9rem !important;
+}
+
+/* Custom Select */
+.kat-field-select {
+  cursor: pointer !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2359d7ff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  padding-right: 2.6rem !important;
+}
+
+.kat-field-select option {
+  background-color: #071226 !important;
+  color: #ffffff !important;
+  padding: 8px !important;
+}
+
+/* Textarea */
+.kat-textarea {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  min-height: 80px !important;
+  padding: 0.75rem 0.9rem 0.75rem 2.65rem !important;
+  background: rgba(7, 18, 38, 0.85) !important;
+  border: 1.5px solid rgba(89, 215, 255, 0.32) !important;
+  border-radius: 0.75rem !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-family: inherit !important;
+  outline: none !important;
+  resize: vertical !important;
+  transition: all 0.2s ease !important;
+}
+
+.kat-textarea:focus {
+  border-color: #59d7ff !important;
+  background: rgba(10, 27, 58, 0.98) !important;
+  box-shadow: 0 0 16px rgba(89, 215, 255, 0.4) !important;
+}
+
+.kat-textarea::placeholder {
+  color: rgba(198, 239, 255, 0.45) !important;
+  font-size: 0.9rem !important;
+}
+
+/* ========================================================
+   SESSIONS CHECKBOX CARDS (INTERACTIVE GRID)
+======================================================== */
+.kat-sessions-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 0.75rem !important;
+}
+
+@media (max-width: 680px) {
+  .kat-sessions-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.65rem !important;
+  }
+}
+
+.kat-session-card {
+  position: relative !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.75rem !important;
+  padding: 0.85rem 0.95rem !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1.5px solid rgba(89, 215, 255, 0.2) !important;
+  border-radius: 0.75rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  user-select: none !important;
+  box-sizing: border-box !important;
+}
+
+.kat-session-card:hover {
+  background: rgba(89, 215, 255, 0.08) !important;
+  border-color: rgba(89, 215, 255, 0.4) !important;
+}
+
+.kat-session-card:has(input:checked) {
+  background: rgba(89, 215, 255, 0.15) !important;
+  border-color: #59d7ff !important;
+  box-shadow: 0 0 16px rgba(89, 215, 255, 0.22) !important;
+}
+
+.kat-session-card input[type="checkbox"] {
+  accent-color: #59d7ff !important;
+  width: 18px !important;
+  height: 18px !important;
+  cursor: pointer !important;
+  margin-top: 2px !important;
+  flex-shrink: 0 !important;
+}
+
+.kat-session-content {
+  flex: 1;
+}
+
+.kat-session-title {
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  line-height: 1.3 !important;
+  margin-bottom: 0.2rem !important;
+}
+
+.kat-session-sub {
+  font-size: 0.75rem !important;
+  color: var(--kat-cyan-light) !important;
+  line-height: 1.25 !important;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.kat-session-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+/* ========================================================
+   NEWSLETTER OPT-IN TOGGLE CARD
+======================================================== */
+.kat-optin-card {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.75rem 1rem !important;
+  background: rgba(89, 215, 255, 0.07) !important;
+  border: 1px solid rgba(89, 215, 255, 0.26) !important;
+  border-radius: 0.75rem !important;
+  cursor: pointer !important;
+  margin-top: 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.kat-optin-card:hover {
+  background: rgba(89, 215, 255, 0.11) !important;
+  border-color: #59d7ff !important;
+}
+
+.kat-optin-card input[type="checkbox"] {
+  accent-color: #59d7ff !important;
+  width: 18px !important;
+  height: 18px !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+}
+
+.kat-optin-text {
+  font-size: 0.85rem !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  line-height: 1.35 !important;
+}
+
+/* ========================================================
+   SUBMIT BUTTON & TRUST SIGNALS
+======================================================== */
+.kat-submit-wrap {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.kat-submit-btn-pro {
+  background: linear-gradient(135deg, #0095ff 0%, #0066eb 50%, #003db3 100%) !important;
+  color: #ffffff !important;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 1.02rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em !important;
+  border: none !important;
+  border-radius: 9999px !important;
+  min-height: 52px !important;
+  height: auto !important;
+  padding: 0.75rem 2rem !important;
+  width: 100% !important;
+  max-width: 480px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.65rem !important;
+  box-shadow: 0 0 32px rgba(0, 132, 255, 0.45), 0 12px 28px rgba(0, 14, 34, 0.45) !important;
+  transition: all 0.22s ease !important;
+  text-shadow: 0 1px 3px rgba(0, 15, 45, 0.4) !important;
+}
+
+.kat-submit-btn-pro *,
+.kat-submit-btn-pro span {
+  color: #ffffff !important;
+  font-family: inherit !important;
+  font-weight: inherit !important;
+}
+
+.kat-submit-btn-pro span {
+  white-space: nowrap !important;
+}
+
+.kat-submit-btn-pro svg {
+  stroke: #ffffff !important;
+  color: #ffffff !important;
+  flex-shrink: 0 !important;
+}
+
+.kat-submit-btn-pro:hover {
+  background: linear-gradient(135deg, #1aa0ff 0%, #0072f8 50%, #0849c7 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 0 45px rgba(0, 150, 255, 0.75), 0 15px 32px rgba(0, 14, 34, 0.55) !important;
+}
+
+.kat-submit-btn-pro:active {
+  transform: translateY(0) !important;
+}
+
+/* Ensure all CTAs on the page have white text and proper font */
+.kat-cta,
+.kat-cta *,
+.kat-cta span {
+  color: #ffffff !important;
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif !important;
+}
+
+@media (max-width: 480px) {
+  .kat-submit-btn-pro {
+    font-size: 0.92rem !important;
+    min-height: 48px !important;
+    padding: 0.65rem 1.25rem !important;
+    gap: 0.45rem !important;
+  }
+  .kat-submit-btn-pro span {
+    white-space: normal !important;
+    text-align: center !important;
+  }
+}
+
+/* Trust Badges */
+.kat-trust-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.65rem 1.5rem !important;
+  margin-top: 1.25rem !important;
+  padding-top: 1.15rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  font-size: 0.8rem !important;
+  color: var(--kat-cyan-light) !important;
+}
+
+.kat-trust-item {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.4rem !important;
+  font-weight: 500 !important;
+}
+
+.kat-trust-item svg {
+  flex-shrink: 0;
+}
+
+/* ========================================================
+   MODAL & TOASTS STYLES
+======================================================== */
+.kat-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background-color: rgba(7, 18, 38, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.kat-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.kat-modal-card {
+  background: linear-gradient(145deg, #0b1a36 0%, #071226 100%) !important;
+  border: 1.5px solid rgba(89, 215, 255, 0.35) !important;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(0, 174, 255, 0.25) !important;
+  border-radius: 1.5rem !important;
+  width: 100% !important;
+  max-width: 650px !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  color: #ffffff !important;
+  transform: scale(0.95) translateY(20px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative !important;
+  padding: 0 !important;
+}
+
+.kat-modal-overlay.active .kat-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.kat-modal-header {
+  padding: 1.5rem 1.75rem 1rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.kat-modal-close {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  border-radius: 50% !important;
+  width: 36px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.kat-modal-close:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  transform: rotate(90deg) !important;
+}
+
+.kat-modal-body {
+  padding: 1.75rem !important;
+}
+
+/* Toast Container */
+.kat-toast-container {
+  position: fixed !important;
+  top: 1.5rem !important;
+  right: 1.5rem !important;
+  z-index: 100000 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+  pointer-events: none !important;
+}
+
+.kat-toast {
+  pointer-events: auto !important;
+  min-width: 320px !important;
+  max-width: 450px !important;
+  padding: 1rem 1.25rem !important;
+  border-radius: 0.85rem !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 0.75rem !important;
+  font-size: 0.9rem !important;
+  line-height: 1.4 !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4) !important;
+  animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+  transition: all 0.3s ease !important;
+}
+
+@keyframes slideInToast {
+  from { opacity: 0; transform: translateX(100%) scale(0.9); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.kat-toast.toast-success {
+  background: rgba(10, 40, 30, 0.95) !important;
+  border: 1px solid #00d084 !important;
+  color: #c1f9e2 !important;
+}
+
+.kat-toast.toast-error {
+  background: rgba(45, 15, 20, 0.95) !important;
+  border: 1px solid #cf2e2e !important;
+  color: #ffd6d6 !important;
+}
+
+.kat-toast.toast-info {
+  background: rgba(15, 30, 60, 0.95) !important;
+  border: 1px solid #0693e3 !important;
+  color: #d1edff !important;
+}
+
+/* Success Card */
+.kat-success-card {
+  text-align: center !important;
+  padding: 2.5rem 1.5rem !important;
+}
+
+.kat-success-icon {
+  width: 72px !important;
+  height: 72px !important;
+  margin: 0 auto 1.25rem !important;
+  border-radius: 50% !important;
+  background: rgba(0, 208, 132, 0.15) !important;
+  border: 2px solid #00d084 !important;
+  color: #00d084 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.kat-reg-code-badge {
+  display: inline-block !important;
+  font-family: monospace !important;
+  font-size: 1.6rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.15em !important;
+  color: #59d7ff !important;
+  background: rgba(89, 215, 255, 0.12) !important;
+  border: 1.5px dashed #59d7ff !important;
+  padding: 0.5rem 1.75rem !important;
+  border-radius: 0.85rem !important;
+  margin: 1.25rem 0 !important;
+}
+
+/* ========================================================
+   FLOATING ONLINE SUPPORT & NEWSLETTER WIDGET
+======================================================== */
+.kat-support-bubble {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  padding: 0.75rem 1.25rem !important;
+  background: linear-gradient(135deg, #0082FF, #0056b3) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 8px 30px rgba(0, 130, 255, 0.45) !important;
+  cursor: pointer !important;
+  animation: supportPulse 2s infinite !important;
+  transition: all 0.25s ease !important;
+}
+
+@media (max-width: 640px) {
+  .kat-support-bubble {
+    bottom: 18px !important;
+    right: 18px !important;
+    padding: 0.65rem 1rem !important;
+  }
+}
+
+.kat-support-bubble:hover {
+  transform: translateY(-3px) scale(1.03) !important;
+  box-shadow: 0 12px 35px rgba(0, 130, 255, 0.6) !important;
+}
+
+@keyframes supportPulse {
+  0% { box-shadow: 0 8px 30px rgba(0, 130, 255, 0.45), 0 0 0 0 rgba(0, 130, 255, 0.6); }
+  70% { box-shadow: 0 8px 30px rgba(0, 130, 255, 0.45), 0 0 0 15px rgba(0, 130, 255, 0); }
+  100% { box-shadow: 0 8px 30px rgba(0, 130, 255, 0.45), 0 0 0 0 rgba(0, 130, 255, 0); }
+}
+
+.kat-support-window {
+  position: fixed !important;
+  bottom: 85px !important;
+  right: 24px !important;
+  width: 380px !important;
+  max-width: calc(100vw - 32px) !important;
+  background: linear-gradient(170deg, #0d1e3d 0%, #071226 100%) !important;
+  border: 1px solid rgba(89, 215, 255, 0.3) !important;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7) !important;
+  border-radius: 1.25rem !important;
+  z-index: 9999 !important;
+  display: none;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  animation: slideUpWidget 0.25s ease forwards !important;
+}
+
+.kat-support-window.active {
+  display: flex !important;
+}
+
+@keyframes slideUpWidget {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.kat-support-header {
+  padding: 1rem 1.25rem !important;
+  background: linear-gradient(90deg, #15264a, #0c1a36) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.kat-support-tabs {
+  display: flex !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.kat-support-tab {
+  flex: 1 !important;
+  text-align: center !important;
+  padding: 0.65rem !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  background: none !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+}
+
+.kat-support-tab.active {
+  color: #59d7ff !important;
+  border-bottom-color: #59d7ff !important;
+  background: rgba(89, 215, 255, 0.05) !important;
+}
+
+.kat-support-content {
+  padding: 1.25rem !important;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+}
