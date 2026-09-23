@@ -894,6 +894,316 @@ html {
   overflow-y: auto !important;
 }
 
+/* ========================================================
+   THANK YOU & REGISTRATION SUMMARY (SUCCESS STATE)
+======================================================== */
+.kat-success-summary-wrapper {
+  animation: fadeInSuccess 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInSuccess {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.kat-success-badge-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(89, 215, 255, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .kat-success-badge-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+}
+
+.kat-success-icon-large {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 208, 132, 0.15);
+  border: 2px solid #00d084;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 25px rgba(0, 208, 132, 0.3);
+}
+
+.kat-badge-pill-success {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #00d084;
+  background: rgba(0, 208, 132, 0.12);
+  border: 1px solid rgba(0, 208, 132, 0.35);
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 0.35rem;
+}
+
+.kat-success-title {
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem) !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  margin: 0 0 0.35rem 0 !important;
+  line-height: 1.3 !important;
+}
+
+.kat-success-sub {
+  font-size: 0.9rem !important;
+  color: #c6efff !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+
+/* Luxury Ticket Card */
+.kat-ticket-card {
+  background: rgba(13, 27, 56, 0.75);
+  border: 1.5px solid rgba(89, 215, 255, 0.3);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 640px) {
+  .kat-ticket-card {
+    padding: 1rem;
+  }
+}
+
+.kat-ticket-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px dashed rgba(89, 215, 255, 0.25);
+  margin-bottom: 1.25rem;
+}
+
+.kat-ticket-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #59d7ff;
+}
+
+.kat-ticket-code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 15px rgba(89, 215, 255, 0.5);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.kat-status-tag-confirmed {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #00d084;
+  background: rgba(0, 208, 132, 0.15);
+  border: 1px solid #00d084;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+}
+
+/* Summary Table */
+.kat-summary-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.kat-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.kat-summary-table tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.kat-summary-table tr:last-child {
+  border-bottom: none;
+}
+
+.kat-sum-lbl {
+  padding: 0.75rem 1rem 0.75rem 0;
+  color: #92b8d9;
+  font-weight: 600;
+  width: 38%;
+  vertical-align: top;
+}
+
+.kat-sum-val {
+  padding: 0.75rem 0;
+  color: #ffffff;
+  font-weight: 700;
+  vertical-align: top;
+}
+
+/* Instructions Box */
+.kat-instructions-box {
+  background: rgba(89, 215, 255, 0.06);
+  border: 1px solid rgba(89, 215, 255, 0.2);
+  border-radius: 0.85rem;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.kat-instruct-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: #59d7ff;
+  margin-bottom: 0.75rem;
+}
+
+.kat-instruct-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.85rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #c6efff;
+  line-height: 1.5;
+}
+
+.kat-instruct-list li {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.kat-instruct-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #00d084;
+  font-weight: 800;
+}
+
+.kat-hotline-note {
+  font-size: 0.82rem;
+  color: rgba(198, 239, 255, 0.85);
+  border-top: 1px dashed rgba(89, 215, 255, 0.2);
+  padding-top: 0.65rem;
+  margin-top: 0.5rem;
+}
+
+/* Actions */
+.kat-success-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.kat-btn-outline-print {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(89, 215, 255, 0.4);
+  color: #ffffff;
+  padding: 0.75rem 1.4rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.kat-btn-outline-print:hover {
+  background: rgba(89, 215, 255, 0.2);
+  border-color: #59d7ff;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.kat-btn-register-another {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #0082FF 0%, #0056b3 100%);
+  border: none;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 130, 255, 0.35);
+}
+
+.kat-btn-register-another:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 130, 255, 0.5);
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #katInlineSuccessCard, #katInlineSuccessCard * {
+    visibility: visible;
+  }
+  #katInlineSuccessCard {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: #000000 !important;
+    background: #ffffff !important;
+    padding: 20px !important;
+  }
+  .kat-ticket-card {
+    background: #ffffff !important;
+    border: 2px solid #333333 !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+  .kat-ticket-code {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+  .kat-sum-lbl {
+    color: #555555 !important;
+  }
+  .kat-sum-val {
+    color: #000000 !important;
+  }
+  .kat-success-actions {
+    display: none !important;
+  }
+}
+
 </style>
 </head>
 
@@ -1672,6 +1982,110 @@ html {
           </div>
 
         </form>
+
+        <!-- ========================================================
+             INLINE SUCCESS SUMMARY CARD (HIỂN THỊ TỨC THÌ SAU KHI ĐĂNG KÝ)
+        ======================================================== -->
+        <div class="kat-success-summary-wrapper" id="katInlineSuccessCard" style="display: none;">
+          <div class="kat-success-badge-header">
+            <div class="kat-success-icon-large">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00d084" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+            <div class="kat-success-head-text">
+              <span class="kat-badge-pill-success">ĐĂNG KÝ THÀNH CÔNG</span>
+              <h3 class="kat-success-title">Cảm Ơn Quý Đại Biểu Đã Đăng Ký Tham Dự K.A.T 2026</h3>
+              <p class="kat-success-sub">Hồ sơ tham dự của Quý vị đã được tiếp nhận và lưu trữ chính thức trên hệ thống Ban tổ chức KBIT Association.</p>
+            </div>
+          </div>
+
+          <!-- Luxury Ticket Card -->
+          <div class="kat-ticket-card">
+            <div class="kat-ticket-header">
+              <div>
+                <div class="kat-ticket-label">MÃ SỐ ĐĂNG KÝ THAM DỰ (E-TICKET)</div>
+                <div class="kat-ticket-code" id="inlineSuccessCode">KAT-2026</div>
+              </div>
+              <div>
+                <span class="kat-status-tag-confirmed">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  Đã Tiếp Nhận Hồ Sơ
+                </span>
+              </div>
+            </div>
+
+            <!-- Summary Table -->
+            <div class="kat-summary-table-wrap">
+              <table class="kat-summary-table">
+                <tbody>
+                  <tr>
+                    <td class="kat-sum-lbl">Họ và tên Đại biểu:</td>
+                    <td class="kat-sum-val" id="inlineSuccessName">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Số điện thoại / Zalo:</td>
+                    <td class="kat-sum-val" id="inlineSuccessPhone">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Địa chỉ Email:</td>
+                    <td class="kat-sum-val" id="inlineSuccessEmail">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Đơn vị công tác:</td>
+                    <td class="kat-sum-val" id="inlineSuccessOrg">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Chuyên khoa:</td>
+                    <td class="kat-sum-val" id="inlineSuccessSpecialty">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Phiên hội thảo quan tâm:</td>
+                    <td class="kat-sum-val" id="inlineSuccessSessions">--</td>
+                  </tr>
+                  <tr id="inlineSuccessNotesRow" style="display: none;">
+                    <td class="kat-sum-lbl">Ghi chú kèm theo:</td>
+                    <td class="kat-sum-val" id="inlineSuccessNotes">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Thời gian ghi nhận:</td>
+                    <td class="kat-sum-val" id="inlineSuccessTime">--</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Next steps & contact -->
+            <div class="kat-instructions-box">
+              <div class="kat-instruct-title">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#59d7ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span>Các Bước Tiếp Theo Dành Cho Đại Biểu:</span>
+              </div>
+              <ul class="kat-instruct-list">
+                <li><strong>Xác nhận trong 24h:</strong> Ban thư ký K.A.T 2026 sẽ liên hệ trực tiếp qua SĐT/Zalo của Quý vị để kiểm tra đối soát thông tin.</li>
+                <li><strong>Hồ sơ cấp CME:</strong> Quý Bác sĩ vui lòng chuẩn bị ảnh chụp Chứng chỉ hành nghề y khoa để Ban thư ký hoàn thiện hồ sơ CME.</li>
+                <li><strong>Tài liệu & Check-in:</strong> Mã QR check-in hội nghị và tài liệu báo cáo sẽ được gửi tới Email đăng ký trước ngày 04/10/2026.</li>
+              </ul>
+              <div class="kat-hotline-note">
+                Tổng đài hỗ trợ: <strong style="color: #59d7ff;">0909 123 456</strong> (Call/Zalo) · Email: <strong style="color: #59d7ff;">kat2026@kbitassociation.com</strong>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="kat-success-actions">
+              <button type="button" onclick="window.print()" class="kat-btn-outline-print">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                In / Lưu Phiếu Đăng Ký (PDF)
+              </button>
+              <button type="button" id="btnRegisterAnother" class="kat-btn-register-another">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                Đăng Ký Thêm Đại Biểu Khác
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1719,3 +2133,184 @@ html {
  <div class=ft-chatbox-skin1>
  <a class="ft-cco ft-cmes" rel=nofollow title=Messenger href=https://m.me/706948069159452><i><svg class=khacus width=100% height=100% viewBox="0 0 70 70" version=1.1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink xml:space=preserve xmlns:serif=http://www.serif.com/ style=fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2><g transform=matrix(0.129883,0,0,0.129912,1.75004,1.74647)><g id=Layer_2><g id=Color><g id=_38.Messenger><path id=Icon d="M256,121.263C181.592,121.263 121.263,177.179 121.263,246.164C121.557,284.737 140.214,320.949 171.453,343.579L171.992,387.604C172.025,389.299 173.428,390.676 175.124,390.676C175.667,390.676 176.201,390.534 176.674,390.265L218.745,366.383C230.901,369.598 243.426,371.206 256,371.166C330.408,371.166 390.737,315.251 390.737,246.265C390.737,177.28 330.408,121.263 256,121.263ZM266.105,286.316L237.305,256.337C235.613,254.59 232.947,254.176 230.804,255.326L180.278,282.543C180.017,282.667 179.731,282.731 179.442,282.731C178.37,282.731 177.488,281.849 177.488,280.777C177.488,280.314 177.653,279.865 177.954,279.512L237.811,216.421C238.625,215.549 239.767,215.054 240.96,215.054C242.153,215.054 243.295,215.549 244.109,216.421L272.842,246.973C274.526,248.758 277.221,249.188 279.377,248.017L329.061,221.069C329.364,220.883 329.712,220.784 330.068,220.784C331.121,220.784 331.988,221.651 331.988,222.704C331.988,223.233 331.77,223.738 331.385,224.101L272.505,286.484C271.688,287.399 270.517,287.923 269.29,287.923C268.079,287.923 266.922,287.413 266.105,286.518L266.105,286.316Z" style=fill:#fff;fill-rule:nonzero></path></g></g></g></g></svg></i><span class=sf-hidden>Messenger</span></a> </div>
  <style class=sf-hidden>.ft-chatbox-skin1{right:20px;left:auto}.ft-chatbox-skin1 a:hover span{left:auto;right:55px}.ft-chatbox-skin1{bottom:70px}.ft-chatbox-skin1 svg{opacity:1}.ft-chatbox-skin1 i,.ft-chatbox-skin1 svg,.ft-chatbox-skin1 a:hover span{border-radius:50px}</style>
+
+
+<!-- ========================================================
+     MODAL: XÁC NHẬN ĐĂNG KÝ THÀNH CÔNG & TÓM TẮT HỒ SƠ
+======================================================== -->
+<div class="kat-modal-overlay" id="katSuccessModal">
+  <div class="kat-modal-card" style="max-width: 620px; padding: 0;">
+    <button class="kat-modal-close" style="position: absolute; top: 1rem; right: 1rem; z-index: 10;" onclick="closeModal('katSuccessModal')">&times;</button>
+    <div class="kat-success-card" style="padding: 2rem 1.5rem;">
+      <div class="kat-success-icon" style="width: 64px; height: 64px; margin: 0 auto 1rem;">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#00d084" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      </div>
+      <span class="kat-badge-pill-success" style="margin-bottom: 0.5rem;">ĐĂNG KÝ THÀNH CÔNG</span>
+      <h3 style="font-size: 1.45rem; font-weight: 800; color: #ffffff; margin: 0 0 0.4rem 0;">Cảm Ơn Quý Đại Biểu!</h3>
+      <p style="color: #c6efff; font-size: 0.92rem; margin: 0; line-height: 1.5;">
+        Cảm ơn Quý Bác sĩ / Đại biểu <strong id="successRegName" style="color:#ffffff;"></strong> đã hoàn tất đăng ký tham dự Hội thảo K.A.T 2026.
+      </p>
+
+      <div style="margin: 1.15rem 0;">
+        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: #59d7ff; font-weight: 700;">Mã số đăng ký chính thức:</div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.35rem;">
+          <span class="kat-reg-code-badge" id="successRegCode" style="margin: 0;">KAT-2026</span>
+          <button type="button" id="btnCopyRegCode" title="Sao chép mã" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(89,215,255,0.3); color: #59d7ff; padding: 0.45rem 0.75rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.8rem; font-weight: 600;">
+            📋 Chép mã
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Summary Table -->
+      <div style="background: rgba(13, 27, 56, 0.85); border: 1.5px solid rgba(89,215,255,0.25); border-radius: 0.85rem; padding: 1rem 1.15rem; font-size: 0.86rem; text-align: left; color: #c6efff; line-height: 1.6; margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.4rem;">
+          <span style="color:#92b8d9;">Họ và tên:</span>
+          <strong style="color:#fff;" id="modalSumName">--</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.4rem 0;">
+          <span style="color:#92b8d9;">Số điện thoại:</span>
+          <strong style="color:#fff;" id="modalSumPhone">--</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.4rem 0;">
+          <span style="color:#92b8d9;">Email:</span>
+          <strong style="color:#fff;" id="modalSumEmail">--</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.4rem 0;">
+          <span style="color:#92b8d9;">Đơn vị:</span>
+          <strong style="color:#fff;" id="modalSumOrg">--</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding-top: 0.4rem;">
+          <span style="color:#92b8d9;">Chuyên khoa:</span>
+          <strong style="color:#fff;" id="modalSumSpecialty">--</strong>
+        </div>
+      </div>
+
+      <div style="background: rgba(89, 215, 255, 0.08); border-radius: 0.65rem; padding: 0.75rem 1rem; font-size: 0.8rem; color: #c6efff; line-height: 1.5; text-align: left; margin-bottom: 1.25rem;">
+        Ban thư ký sẽ liên hệ qua điện thoại/Zalo trong vòng 24 giờ để hoàn tất thủ tục và gửi tài liệu chính thức. Hotline: <strong style="color: #59d7ff;">0909 123 456</strong>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <button onclick="window.print()" class="kat-btn-outline-print" style="flex: 1; height: 44px; font-size: 0.9rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          In tóm tắt
+        </button>
+        <button onclick="closeModal('katSuccessModal')" class="kat-submit-btn-pro" style="flex: 1; height: 44px; font-size: 0.9rem; max-width: none;">
+          Đã hiểu & Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================
+     FLOATING ONLINE SUPPORT & NEWSLETTER WIDGET
+======================================================== -->
+<div class="kat-support-bubble" id="katSupportBubble" title="Tư vấn & Hỗ trợ trực tuyến">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <span style="font-weight: 700; font-size: 0.85rem;">Tư vấn & Hỗ trợ</span>
+</div>
+
+<div class="kat-support-window" id="katSupportWindow">
+  <div class="kat-support-header">
+    <div style="display: flex; align-items: center; gap: 0.6rem;">
+      <div style="width: 10px; height: 10px; border-radius: 50%; background: #00d084; box-shadow: 0 0 8px #00d084;"></div>
+      <div>
+        <h4 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: #ffffff;">Ban Thư Ký K.A.T 2026</h4>
+        <span style="font-size: 0.75rem; color: #59d7ff;">Hỗ trợ trực tuyến 24/7</span>
+      </div>
+    </div>
+    <button id="katCloseSupport" style="background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.25rem; cursor: pointer;">&times;</button>
+  </div>
+
+  <div class="kat-support-tabs">
+    <button class="kat-support-tab active" data-tab="supportPanelForm">Gửi câu hỏi</button>
+    <button class="kat-support-tab" data-tab="supportPanelNewsletter">Nhận bản tin</button>
+    <button class="kat-support-tab" data-tab="supportPanelDirect">Kênh trực tiếp</button>
+  </div>
+
+  <div class="kat-support-content">
+    <div id="supportPanelForm" class="kat-support-panel">
+      <form id="katSupportForm">
+        <div class="kat-input-group" style="margin-bottom: 0.8rem;">
+          <label class="kat-label" style="font-size: 0.75rem;">Họ và tên <span class="req">*</span></label>
+          <input type="text" name="full_name" class="kat-field" style="height: 42px; padding: 0 0.85rem; font-size: 14px;" placeholder="Bác sĩ / Quý khách" required>
+        </div>
+
+        <div class="kat-input-group" style="margin-bottom: 0.8rem;">
+          <label class="kat-label" style="font-size: 0.75rem;">Số điện thoại / Zalo</label>
+          <input type="tel" name="phone" class="kat-field" style="height: 42px; padding: 0 0.85rem; font-size: 14px;" placeholder="09xx xxx xxx">
+        </div>
+
+        <div class="kat-input-group" style="margin-bottom: 0.8rem;">
+          <label class="kat-label" style="font-size: 0.75rem;">Email liên hệ <span class="req">*</span></label>
+          <input type="email" name="email" class="kat-field" style="height: 42px; padding: 0 0.85rem; font-size: 14px;" placeholder="email@domain.com" required>
+        </div>
+
+        <div class="kat-input-group" style="margin-bottom: 0.8rem;">
+          <label class="kat-label" style="font-size: 0.75rem;">Chủ đề cần tư vấn</label>
+          <select name="topic" class="kat-field kat-field-select" style="height: 42px; padding: 0 0.85rem; font-size: 14px;">
+            <option value="Chứng nhận & Đào tạo CME">Chứng nhận & Đào tạo CME</option>
+            <option value="Nội dung 2 cầu truyền hình lâm sàng">Nội dung 2 cầu truyền hình lâm sàng</option>
+            <option value="Thủ tục & Chi phí đăng ký">Thủ tục & Chi phí đăng ký</option>
+            <option value="Hợp tác chuyên ngành / Tài trợ">Hợp tác chuyên ngành / Tài trợ</option>
+            <option value="Khác">Khác</option>
+          </select>
+        </div>
+
+        <div class="kat-input-group" style="margin-bottom: 1rem;">
+          <label class="kat-label" style="font-size: 0.75rem;">Nội dung câu hỏi <span class="req">*</span></label>
+          <textarea name="message" class="kat-textarea" rows="2" style="padding: 0.65rem 0.85rem; font-size: 14px; min-height: 70px;" placeholder="Nhập câu hỏi hoặc vấn đề cần hỗ trợ..." required></textarea>
+        </div>
+
+        <button type="submit" class="kat-submit-btn-pro" style="height: 44px; font-size: 0.9rem; max-width: none;">
+          Gửi Yêu Cầu Hỗ Trợ
+        </button>
+      </form>
+    </div>
+
+    <div id="supportPanelNewsletter" class="kat-support-panel" style="display: none;">
+      <p style="font-size: 0.85rem; color: #c6efff; margin-bottom: 1rem; line-height: 1.5;">
+        Đăng ký để nhận tài liệu khoa học, thông báo diễn giả và thông tin các hội thảo thẩm mỹ quốc tế tiếp theo từ KBIT.
+      </p>
+      <form id="katNewsletterWidgetForm">
+        <div class="kat-input-group">
+          <label class="kat-label" style="font-size: 0.75rem;">Địa chỉ Email <span class="req">*</span></label>
+          <input type="email" name="email" class="kat-field" style="height: 42px; padding: 0 0.85rem;" placeholder="bacsi@benhvien.vn" required>
+        </div>
+        <button type="submit" class="kat-submit-btn-pro" style="height: 44px; font-size: 0.9rem; max-width: none; margin-top: 0.75rem;">
+          Đăng Ký Nhận Bản Tin
+        </button>
+      </form>
+    </div>
+
+    <div id="supportPanelDirect" class="kat-support-panel" style="display: none;">
+      <div style="display: flex; flex-direction: column; gap: 0.8rem; font-size: 0.85rem; color: #c6efff;">
+        <div style="background: rgba(255,255,255,0.05); padding: 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(89,215,255,0.15);">
+          <strong style="color: #59d7ff; display: block; margin-bottom: 0.2rem;">Hotline Ban Tổ Chức:</strong>
+          <a href="tel:0909123456" style="color: #ffffff; font-size: 1rem; font-weight: 700; text-decoration: none;">0909 123 456</a> (Zalo / Call)
+        </div>
+
+        <div style="background: rgba(255,255,255,0.05); padding: 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(89,215,255,0.15);">
+          <strong style="color: #59d7ff; display: block; margin-bottom: 0.2rem;">Email Thư Ký Hội Nghị:</strong>
+          <a href="mailto:kat2026@kbitassociation.com" style="color: #ffffff; text-decoration: none;">kat2026@kbitassociation.com</a>
+        </div>
+
+        <div style="background: rgba(255,255,255,0.05); padding: 0.8rem; border-radius: 0.5rem; border: 1px solid rgba(89,215,255,0.15);">
+          <strong style="color: #59d7ff; display: block; margin-bottom: 0.2rem;">Kênh Messenger Facebook:</strong>
+          <a href="https://m.me/706948069159452" target="_blank" rel="noopener" style="color: #0082FF; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; margin-top: 0.2rem;">
+            Nhắn tin qua Fanpage <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <div style="font-size: 0.75rem; color: rgba(198,239,255,0.6); margin-top: 0.5rem; text-align: center;">
+          Thời gian làm việc: 08:30 – 18:00 (Thứ 2 – Thứ 7)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- App Script -->
+<script src="/js/app.js"></script>
+
+</body></html>

@@ -814,3 +814,313 @@ html {
   max-height: 400px !important;
   overflow-y: auto !important;
 }
+
+/* ========================================================
+   THANK YOU & REGISTRATION SUMMARY (SUCCESS STATE)
+======================================================== */
+.kat-success-summary-wrapper {
+  animation: fadeInSuccess 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInSuccess {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.kat-success-badge-header {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(89, 215, 255, 0.2);
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .kat-success-badge-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+}
+
+.kat-success-icon-large {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(0, 208, 132, 0.15);
+  border: 2px solid #00d084;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 0 25px rgba(0, 208, 132, 0.3);
+}
+
+.kat-badge-pill-success {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #00d084;
+  background: rgba(0, 208, 132, 0.12);
+  border: 1px solid rgba(0, 208, 132, 0.35);
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 0.35rem;
+}
+
+.kat-success-title {
+  font-size: clamp(1.3rem, 2.5vw, 1.75rem) !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  margin: 0 0 0.35rem 0 !important;
+  line-height: 1.3 !important;
+}
+
+.kat-success-sub {
+  font-size: 0.9rem !important;
+  color: #c6efff !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+}
+
+/* Luxury Ticket Card */
+.kat-ticket-card {
+  background: rgba(13, 27, 56, 0.75);
+  border: 1.5px solid rgba(89, 215, 255, 0.3);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 640px) {
+  .kat-ticket-card {
+    padding: 1rem;
+  }
+}
+
+.kat-ticket-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px dashed rgba(89, 215, 255, 0.25);
+  margin-bottom: 1.25rem;
+}
+
+.kat-ticket-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #59d7ff;
+}
+
+.kat-ticket-code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 15px rgba(89, 215, 255, 0.5);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.kat-status-tag-confirmed {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #00d084;
+  background: rgba(0, 208, 132, 0.15);
+  border: 1px solid #00d084;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+}
+
+/* Summary Table */
+.kat-summary-table-wrap {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+.kat-summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.kat-summary-table tr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.kat-summary-table tr:last-child {
+  border-bottom: none;
+}
+
+.kat-sum-lbl {
+  padding: 0.75rem 1rem 0.75rem 0;
+  color: #92b8d9;
+  font-weight: 600;
+  width: 38%;
+  vertical-align: top;
+}
+
+.kat-sum-val {
+  padding: 0.75rem 0;
+  color: #ffffff;
+  font-weight: 700;
+  vertical-align: top;
+}
+
+/* Instructions Box */
+.kat-instructions-box {
+  background: rgba(89, 215, 255, 0.06);
+  border: 1px solid rgba(89, 215, 255, 0.2);
+  border-radius: 0.85rem;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.kat-instruct-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: #59d7ff;
+  margin-bottom: 0.75rem;
+}
+
+.kat-instruct-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.85rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #c6efff;
+  line-height: 1.5;
+}
+
+.kat-instruct-list li {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.kat-instruct-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #00d084;
+  font-weight: 800;
+}
+
+.kat-hotline-note {
+  font-size: 0.82rem;
+  color: rgba(198, 239, 255, 0.85);
+  border-top: 1px dashed rgba(89, 215, 255, 0.2);
+  padding-top: 0.65rem;
+  margin-top: 0.5rem;
+}
+
+/* Actions */
+.kat-success-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.kat-btn-outline-print {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(89, 215, 255, 0.4);
+  color: #ffffff;
+  padding: 0.75rem 1.4rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.kat-btn-outline-print:hover {
+  background: rgba(89, 215, 255, 0.2);
+  border-color: #59d7ff;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.kat-btn-register-another {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #0082FF 0%, #0056b3 100%);
+  border: none;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 130, 255, 0.35);
+}
+
+.kat-btn-register-another:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 130, 255, 0.5);
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #katInlineSuccessCard, #katInlineSuccessCard * {
+    visibility: visible;
+  }
+  #katInlineSuccessCard {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: #000000 !important;
+    background: #ffffff !important;
+    padding: 20px !important;
+  }
+  .kat-ticket-card {
+    background: #ffffff !important;
+    border: 2px solid #333333 !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+  .kat-ticket-code {
+    color: #000000 !important;
+    text-shadow: none !important;
+  }
+  .kat-sum-lbl {
+    color: #555555 !important;
+  }
+  .kat-sum-val {
+    color: #000000 !important;
+  }
+  .kat-success-actions {
+    display: none !important;
+  }
+}

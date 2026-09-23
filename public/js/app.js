@@ -229,20 +229,116 @@ function initRegisterForms() {
 }
 
 function showSuccessConfirmation(reg) {
+  // 1. Populate and open Modal
   const successModal = document.getElementById('katSuccessModal');
-  if (!successModal) return;
+  if (successModal) {
+    const codeEl = document.getElementById('successRegCode');
+    const nameEl = document.getElementById('successRegName');
+    const emailEl = document.getElementById('successRegEmail');
+    const phoneEl = document.getElementById('successRegPhone');
+    const modalSumName = document.getElementById('modalSumName');
+    const modalSumPhone = document.getElementById('modalSumPhone');
+    const modalSumEmail = document.getElementById('modalSumEmail');
+    const modalSumOrg = document.getElementById('modalSumOrg');
+    const modalSumSpecialty = document.getElementById('modalSumSpecialty');
 
-  const codeEl = document.getElementById('successRegCode');
-  const nameEl = document.getElementById('successRegName');
-  const emailEl = document.getElementById('successRegEmail');
-  const phoneEl = document.getElementById('successRegPhone');
+    if (codeEl) codeEl.textContent = reg.reg_code || 'KAT-2026';
+    if (nameEl) nameEl.textContent = reg.full_name || '';
+    if (emailEl) emailEl.textContent = reg.email || '';
+    if (phoneEl) phoneEl.textContent = reg.phone || '';
+    if (modalSumName) modalSumName.textContent = reg.full_name || '';
+    if (modalSumPhone) modalSumPhone.textContent = reg.phone || '';
+    if (modalSumEmail) modalSumEmail.textContent = reg.email || '';
+    if (modalSumOrg) modalSumOrg.textContent = reg.organization || 'Cá nhân / Tự do';
+    if (modalSumSpecialty) modalSumSpecialty.textContent = reg.specialty || 'Chưa cập nhật';
 
-  if (codeEl) codeEl.textContent = reg.reg_code;
-  if (nameEl) nameEl.textContent = reg.full_name;
-  if (emailEl) emailEl.textContent = reg.email;
-  if (phoneEl) phoneEl.textContent = reg.phone;
+    // Copy button
+    const copyBtn = document.getElementById('btnCopyRegCode');
+    if (copyBtn) {
+      copyBtn.onclick = () => {
+        if (navigator.clipboard && reg.reg_code) {
+          navigator.clipboard.writeText(reg.reg_code).then(() => {
+            showToast(`Đã sao chép mã ${reg.reg_code}`, 'info');
+          });
+        }
+      };
+    }
 
-  openModal('katSuccessModal');
+    openModal('katSuccessModal');
+  }
+
+  // 2. Populate and display Inline Success Summary Card
+  const inlineCard = document.getElementById('katInlineSuccessCard');
+  const inlineForm = document.getElementById('katInlineRegForm');
+
+  if (inlineCard) {
+    const codeEl = document.getElementById('inlineSuccessCode');
+    const nameEl = document.getElementById('inlineSuccessName');
+    const phoneEl = document.getElementById('inlineSuccessPhone');
+    const emailEl = document.getElementById('inlineSuccessEmail');
+    const orgEl = document.getElementById('inlineSuccessOrg');
+    const specialtyEl = document.getElementById('inlineSuccessSpecialty');
+    const sessionsEl = document.getElementById('inlineSuccessSessions');
+    const notesRow = document.getElementById('inlineSuccessNotesRow');
+    const notesEl = document.getElementById('inlineSuccessNotes');
+    const timeEl = document.getElementById('inlineSuccessTime');
+
+    if (codeEl) codeEl.textContent = reg.reg_code || 'KAT-2026';
+    if (nameEl) nameEl.textContent = reg.full_name || '';
+    if (phoneEl) phoneEl.textContent = reg.phone || '';
+    if (emailEl) emailEl.textContent = reg.email || '';
+    if (orgEl) orgEl.textContent = reg.organization || 'Cá nhân / Tự do';
+    if (specialtyEl) specialtyEl.textContent = reg.specialty || 'Chưa cập nhật';
+    if (sessionsEl) sessionsEl.textContent = reg.interested_sessions || 'Tất cả các phiên khoa học';
+
+    if (notesRow && notesEl) {
+      if (reg.notes && reg.notes.trim()) {
+        notesRow.style.display = 'table-row';
+        notesEl.textContent = reg.notes;
+      } else {
+        notesRow.style.display = 'none';
+      }
+    }
+
+    if (timeEl) {
+      const now = new Date();
+      timeEl.textContent = now.toLocaleDateString('vi-VN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+    }
+
+    // Toggle inline views
+    if (inlineForm) inlineForm.style.display = 'none';
+    inlineCard.style.display = 'block';
+
+    // Handle "Register Another" button
+    const btnRegisterAnother = document.getElementById('btnRegisterAnother');
+    if (btnRegisterAnother) {
+      btnRegisterAnother.onclick = () => {
+        inlineCard.style.display = 'none';
+        if (inlineForm) {
+          inlineForm.reset();
+          inlineForm.style.display = 'block';
+        }
+        const regSection = document.getElementById('dang-ky-kat');
+        if (regSection) {
+          regSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      };
+    }
+
+    // Smooth scroll to card
+    const regSection = document.getElementById('dang-ky-kat');
+    if (regSection) {
+      const rect = regSection.getBoundingClientRect();
+      const targetTop = rect.top + window.pageYOffset - 30;
+      window.scrollTo({ top: targetTop, behavior: 'smooth' });
+    }
+  }
 }
 
 // ==========================================

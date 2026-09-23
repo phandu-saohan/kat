@@ -270,6 +270,110 @@ pro_registration_html = '''
           </div>
 
         </form>
+
+        <!-- ========================================================
+             INLINE SUCCESS SUMMARY CARD (HIỂN THỊ TỨC THÌ SAU KHI ĐĂNG KÝ)
+        ======================================================== -->
+        <div class="kat-success-summary-wrapper" id="katInlineSuccessCard" style="display: none;">
+          <div class="kat-success-badge-header">
+            <div class="kat-success-icon-large">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#00d084" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+            </div>
+            <div class="kat-success-head-text">
+              <span class="kat-badge-pill-success">ĐĂNG KÝ THÀNH CÔNG</span>
+              <h3 class="kat-success-title">Cảm Ơn Quý Đại Biểu Đã Đăng Ký Tham Dự K.A.T 2026</h3>
+              <p class="kat-success-sub">Hồ sơ tham dự của Quý vị đã được tiếp nhận và lưu trữ chính thức trên hệ thống Ban tổ chức KBIT Association.</p>
+            </div>
+          </div>
+
+          <!-- Luxury Ticket Card -->
+          <div class="kat-ticket-card">
+            <div class="kat-ticket-header">
+              <div>
+                <div class="kat-ticket-label">MÃ SỐ ĐĂNG KÝ THAM DỰ (E-TICKET)</div>
+                <div class="kat-ticket-code" id="inlineSuccessCode">KAT-2026</div>
+              </div>
+              <div>
+                <span class="kat-status-tag-confirmed">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  Đã Tiếp Nhận Hồ Sơ
+                </span>
+              </div>
+            </div>
+
+            <!-- Summary Table -->
+            <div class="kat-summary-table-wrap">
+              <table class="kat-summary-table">
+                <tbody>
+                  <tr>
+                    <td class="kat-sum-lbl">Họ và tên Đại biểu:</td>
+                    <td class="kat-sum-val" id="inlineSuccessName">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Số điện thoại / Zalo:</td>
+                    <td class="kat-sum-val" id="inlineSuccessPhone">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Địa chỉ Email:</td>
+                    <td class="kat-sum-val" id="inlineSuccessEmail">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Đơn vị công tác:</td>
+                    <td class="kat-sum-val" id="inlineSuccessOrg">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Chuyên khoa:</td>
+                    <td class="kat-sum-val" id="inlineSuccessSpecialty">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Phiên hội thảo quan tâm:</td>
+                    <td class="kat-sum-val" id="inlineSuccessSessions">--</td>
+                  </tr>
+                  <tr id="inlineSuccessNotesRow" style="display: none;">
+                    <td class="kat-sum-lbl">Ghi chú kèm theo:</td>
+                    <td class="kat-sum-val" id="inlineSuccessNotes">--</td>
+                  </tr>
+                  <tr>
+                    <td class="kat-sum-lbl">Thời gian ghi nhận:</td>
+                    <td class="kat-sum-val" id="inlineSuccessTime">--</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Next steps & contact -->
+            <div class="kat-instructions-box">
+              <div class="kat-instruct-title">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#59d7ff" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span>Các Bước Tiếp Theo Dành Cho Đại Biểu:</span>
+              </div>
+              <ul class="kat-instruct-list">
+                <li><strong>Xác nhận trong 24h:</strong> Ban thư ký K.A.T 2026 sẽ liên hệ trực tiếp qua SĐT/Zalo của Quý vị để kiểm tra đối soát thông tin.</li>
+                <li><strong>Hồ sơ cấp CME:</strong> Quý Bác sĩ vui lòng chuẩn bị ảnh chụp Chứng chỉ hành nghề y khoa để Ban thư ký hoàn thiện hồ sơ CME.</li>
+                <li><strong>Tài liệu & Check-in:</strong> Mã QR check-in hội nghị và tài liệu báo cáo sẽ được gửi tới Email đăng ký trước ngày 04/10/2026.</li>
+              </ul>
+              <div class="kat-hotline-note">
+                Tổng đài hỗ trợ: <strong style="color: #59d7ff;">0909 123 456</strong> (Call/Zalo) · Email: <strong style="color: #59d7ff;">kat2026@kbitassociation.com</strong>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="kat-success-actions">
+              <button type="button" onclick="window.print()" class="kat-btn-outline-print">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                In / Lưu Phiếu Đăng Ký (PDF)
+              </button>
+              <button type="button" id="btnRegisterAnother" class="kat-btn-register-another">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                Đăng Ký Thêm Đại Biểu Khác
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -305,36 +409,68 @@ if copyright_search in html:
 # 8. Modals, Support Widget & App Script
 modal_and_support_html = '''
 <!-- ========================================================
-     MODAL: XÁC NHẬN ĐĂNG KÝ THÀNH CÔNG
+     MODAL: XÁC NHẬN ĐĂNG KÝ THÀNH CÔNG & TÓM TẮT HỒ SƠ
 ======================================================== -->
 <div class="kat-modal-overlay" id="katSuccessModal">
-  <div class="kat-modal-card" style="max-width: 520px; padding: 0;">
+  <div class="kat-modal-card" style="max-width: 620px; padding: 0;">
     <button class="kat-modal-close" style="position: absolute; top: 1rem; right: 1rem; z-index: 10;" onclick="closeModal('katSuccessModal')">&times;</button>
-    <div class="kat-success-card">
-      <div class="kat-success-icon">
-        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    <div class="kat-success-card" style="padding: 2rem 1.5rem;">
+      <div class="kat-success-icon" style="width: 64px; height: 64px; margin: 0 auto 1rem;">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#00d084" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
       </div>
-      <h3 style="font-size: 1.45rem; font-weight: 800; color: #ffffff; margin: 0 0 0.5rem 0;">Đăng Ký Thành Công!</h3>
-      <p style="color: #c6efff; font-size: 0.95rem; margin: 0; line-height: 1.5;">
-        Cảm ơn Quý đại biểu <strong id="successRegName" style="color:#ffffff;"></strong> đã đăng ký tham dự Hội thảo K.A.T 2026.
+      <span class="kat-badge-pill-success" style="margin-bottom: 0.5rem;">ĐĂNG KÝ THÀNH CÔNG</span>
+      <h3 style="font-size: 1.45rem; font-weight: 800; color: #ffffff; margin: 0 0 0.4rem 0;">Cảm Ơn Quý Đại Biểu!</h3>
+      <p style="color: #c6efff; font-size: 0.92rem; margin: 0; line-height: 1.5;">
+        Cảm ơn Quý Bác sĩ / Đại biểu <strong id="successRegName" style="color:#ffffff;"></strong> đã hoàn tất đăng ký tham dự Hội thảo K.A.T 2026.
       </p>
 
-      <div style="margin: 1.35rem 0;">
-        <span style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: #59d7ff; font-weight: 700;">Mã số đăng ký của Quý vị:</span>
-        <div><span class="kat-reg-code-badge" id="successRegCode">KAT-2026</span></div>
-      </div>
-
-      <div style="background: rgba(255,255,255,0.06); border: 1.5px solid rgba(89,215,255,0.25); border-radius: 0.85rem; padding: 1.15rem; font-size: 0.88rem; text-align: left; color: #c6efff; line-height: 1.6;">
-        <div><strong style="color:#fff;">Email tiếp nhận:</strong> <span id="successRegEmail"></span></div>
-        <div style="margin-top: 0.3rem;"><strong style="color:#fff;">Điện thoại / Zalo:</strong> <span id="successRegPhone"></span></div>
-        <div style="margin-top: 0.75rem; font-size: 0.82rem; color: rgba(198,239,255,0.85); border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 0.65rem;">
-          Ban thư ký sẽ liên hệ qua điện thoại hoặc email để hướng dẫn thủ tục tham dự, xác minh CME và gửi tài liệu chính thức trước ngày 04/10/2026.
+      <div style="margin: 1.15rem 0;">
+        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: #59d7ff; font-weight: 700;">Mã số đăng ký chính thức:</div>
+        <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.35rem;">
+          <span class="kat-reg-code-badge" id="successRegCode" style="margin: 0;">KAT-2026</span>
+          <button type="button" id="btnCopyRegCode" title="Sao chép mã" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(89,215,255,0.3); color: #59d7ff; padding: 0.45rem 0.75rem; border-radius: 0.5rem; cursor: pointer; font-size: 0.8rem; font-weight: 600;">
+            📋 Chép mã
+          </button>
         </div>
       </div>
 
-      <button onclick="closeModal('katSuccessModal')" class="kat-submit-btn-pro" style="margin-top: 1.5rem; width: 100%; max-width: none; height: 48px; font-size: 0.95rem;">
-        Đã hiểu & Hoàn tất
-      </button>
+      <!-- Modal Summary Table -->
+      <div style="background: rgba(13, 27, 56, 0.85); border: 1.5px solid rgba(89,215,255,0.25); border-radius: 0.85rem; padding: 1rem 1.15rem; font-size: 0.86rem; text-align: left; color: #c6efff; line-height: 1.6; margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.4rem;">
+          <span style="color:#92b8d9;">Họ và tên:</span>
+          <strong style="color:#fff;" id="modalSumName">--</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.4rem 0;">
+          <span style="color:#92b8d9;">Số điện thoại:</span>
+          <strong style="color:#fff;" id="modalSumPhone">--</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.4rem 0;">
+          <span style="color:#92b8d9;">Email:</span>
+          <strong style="color:#fff;" id="modalSumEmail">--</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.4rem 0;">
+          <span style="color:#92b8d9;">Đơn vị:</span>
+          <strong style="color:#fff;" id="modalSumOrg">--</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding-top: 0.4rem;">
+          <span style="color:#92b8d9;">Chuyên khoa:</span>
+          <strong style="color:#fff;" id="modalSumSpecialty">--</strong>
+        </div>
+      </div>
+
+      <div style="background: rgba(89, 215, 255, 0.08); border-radius: 0.65rem; padding: 0.75rem 1rem; font-size: 0.8rem; color: #c6efff; line-height: 1.5; text-align: left; margin-bottom: 1.25rem;">
+        Ban thư ký sẽ liên hệ qua điện thoại/Zalo trong vòng 24 giờ để hoàn tất thủ tục và gửi tài liệu chính thức. Hotline: <strong style="color: #59d7ff;">0909 123 456</strong>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <button onclick="window.print()" class="kat-btn-outline-print" style="flex: 1; height: 44px; font-size: 0.9rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          In tóm tắt
+        </button>
+        <button onclick="closeModal('katSuccessModal')" class="kat-submit-btn-pro" style="flex: 1; height: 44px; font-size: 0.9rem; max-width: none;">
+          Đã hiểu & Đóng
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -451,7 +587,11 @@ modal_and_support_html = '''
 <script src="/js/app.js"></script>
 '''
 
-html = html.replace('</body>', modal_and_support_html + '\n</body>', 1)
+# Safe append for HTML without </body> tag
+if '</body>' in html:
+    html = html.replace('</body>', modal_and_support_html + '\n</body>', 1)
+else:
+    html = html + '\n' + modal_and_support_html + '\n</body></html>'
 
 # Write output to public/index.html
 with open('public/index.html', 'w', encoding='utf-8') as f:
