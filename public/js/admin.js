@@ -49,11 +49,24 @@ function initAuth() {
 
   // Login form handler
   const loginForm = document.getElementById('adminLoginForm');
+  const loginAlert = document.getElementById('loginAlert');
+  const loginBtn = document.getElementById('btnAdminLoginSubmit');
+
   if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const username = document.getElementById('loginUsername').value.trim();
       const password = document.getElementById('loginPassword').value.trim();
+
+      if (loginAlert) {
+        loginAlert.style.display = 'none';
+        loginAlert.textContent = '';
+      }
+
+      if (loginBtn) {
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Đang xác thực...';
+      }
 
       try {
         const res = await fetch('/api/admin/login', {
@@ -73,10 +86,33 @@ function initAuth() {
           showAdminLayout();
           loadAllData();
         } else {
-          alert(data.message || 'Tài khoản hoặc mật khẩu không chính xác.');
+          const msg = data.message || 'Tài khoản hoặc mật khẩu không chính xác.';
+          if (loginAlert) {
+            loginAlert.style.display = 'block';
+            loginAlert.style.background = 'rgba(239, 68, 68, 0.15)';
+            loginAlert.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+            loginAlert.style.color = '#ff6b6b';
+            loginAlert.textContent = msg;
+          } else {
+            alert(msg);
+          }
         }
       } catch (err) {
-        alert('Không thể kết nối máy chủ để đăng nhập.');
+        const errMsg = 'Không thể kết nối máy chủ. Vui lòng đảm bảo server đang chạy.';
+        if (loginAlert) {
+          loginAlert.style.display = 'block';
+          loginAlert.style.background = 'rgba(239, 68, 68, 0.15)';
+          loginAlert.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+          loginAlert.style.color = '#ff6b6b';
+          loginAlert.textContent = errMsg;
+        } else {
+          alert(errMsg);
+        }
+      } finally {
+        if (loginBtn) {
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Đăng Nhập Hệ Thống';
+        }
       }
     });
   }

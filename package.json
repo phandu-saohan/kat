@@ -7,6 +7,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
+    "dev": "node --watch server.js",
     "start": "node server.js",
     "build": "echo \"Build completed successfully for Vercel\"",
     "sync:turso": "node scripts/sync_to_turso.js"

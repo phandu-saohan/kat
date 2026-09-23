@@ -375,8 +375,8 @@ app.get('/api/admin/export/:type', adminAuth, async (req, res) => {
   }
 });
 
-// Admin Route
-app.get('/admin', (req, res) => {
+// Admin Route (handles /admin, /admin/, /admin.html)
+app.get(['/admin', '/admin/', '/admin.html'], (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
