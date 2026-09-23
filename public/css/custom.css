@@ -556,7 +556,7 @@ html {
   background-color: rgba(7, 18, 38, 0.88);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   padding: 1rem;
@@ -566,8 +566,9 @@ html {
 }
 
 .kat-modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .kat-modal-card {
@@ -710,69 +711,15 @@ html {
 /* ========================================================
    FLOATING ONLINE SUPPORT & NEWSLETTER WIDGET
 ======================================================== */
-.kat-support-bubble {
-  position: fixed !important;
-  bottom: 24px !important;
-  right: 24px !important;
-  z-index: 9999 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 0.6rem !important;
-  padding: 0.75rem 1.25rem !important;
-  background: linear-gradient(135deg, #0082FF, #0056b3) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
-  border-radius: 999px !important;
-  box-shadow: 0 8px 30px rgba(0, 130, 255, 0.45) !important;
-  cursor: pointer !important;
-  animation: supportPulse 2s infinite !important;
-  transition: all 0.25s ease !important;
-}
-
-@media (max-width: 640px) {
-  .kat-support-bubble {
-    bottom: 18px !important;
-    right: 18px !important;
-    padding: 0.65rem 1rem !important;
-  }
-}
-
-.kat-support-bubble:hover {
-  transform: translateY(-3px) scale(1.03) !important;
-  box-shadow: 0 12px 35px rgba(0, 130, 255, 0.6) !important;
-}
-
+.ft-chatbox-skin1,
+.kat-support-bubble,
 .kat-poster-floating-bubble {
-  position: fixed !important;
-  bottom: 84px !important;
-  right: 24px !important;
-  z-index: 9998 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 0.6rem !important;
-  padding: 0.75rem 1.25rem !important;
-  background: linear-gradient(135deg, #ff9f1c 0%, #ff5400 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.4) !important;
-  border-radius: 999px !important;
-  box-shadow: 0 8px 30px rgba(255, 84, 0, 0.45) !important;
-  cursor: pointer !important;
-  transition: all 0.25s ease !important;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
-.kat-poster-floating-bubble:hover {
-  transform: translateY(-3px) scale(1.03) !important;
-  box-shadow: 0 12px 35px rgba(255, 84, 0, 0.65) !important;
-}
-
-@media (max-width: 768px) {
-  .kat-poster-floating-bubble {
-    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
-    right: 12px !important;
-    padding: 0.6rem 0.95rem !important;
-    font-size: 0.8rem !important;
-  }
-}
 
 
 @keyframes supportPulse {

@@ -81,6 +81,14 @@ pro_registration_html = '''
               <span style="color: #59d7ff; font-weight:700;">Xác nhận trong 24h</span>
             </div>
           </div>
+          
+          <!-- Quick button for already-registered delegates -->
+          <div style="margin: 0.85rem 0 0.5rem; text-align: center;">
+            <button type="button" onclick="openPosterModal()" style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(89, 215, 255, 0.12); border: 1.5px solid #59d7ff; color: #59d7ff; padding: 0.55rem 1.15rem; border-radius: 999px; font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: all 0.2s ease;">
+              <span>🎨</span>
+              <span>Quý Đại biểu đã có thông tin? Bấm vào đây để <strong>Tạo Poster Khách Mời</strong></span>
+            </button>
+          </div>
         </div>
 
         <!-- Registration Form -->
@@ -362,7 +370,7 @@ pro_registration_html = '''
 
             <!-- Action Buttons -->
             <div style="margin-bottom: 0.85rem;">
-              <button type="button" class="kat-btn-create-poster-highlight" id="btnOpenPosterFromSuccess">
+              <button type="button" class="kat-btn-create-poster-highlight" id="btnOpenPosterFromSuccess" onclick="openPosterModal()">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                   <circle cx="12" cy="13" r="4"></circle>
@@ -414,6 +422,13 @@ copyright_search = '<p>© 2026 KBIT Association. Bảo lưu mọi quyền.</p>'
 copyright_replace = '''<p>© 2026 KBIT Association. Bảo lưu mọi quyền. · <a href="/admin" style="color: rgba(89,215,255,0.7); text-decoration: none; font-weight: 600;">CMS Quản trị</a></p>'''
 if copyright_search in html:
     html = html.replace(copyright_search, copyright_replace, 1)
+
+# 7b. REMOVE FLOATING MESSENGER CHATBOX & STYLES (ft-chatbox-skin1)
+html = re.sub(r'<div class=ft-chatbox-skin1>[\s\S]*?</div>\s*<style class=sf-hidden>\.ft-chatbox-skin1[\s\S]*?</style>', '', html)
+html = re.sub(r'<div class=["\']?ft-chatbox-skin1["\']?>[\s\S]*?</div>', '', html)
+html = re.sub(r'<style id=chat-css-css>[\s\S]*?</style>', '', html)
+print('7b. Removed floating Messenger chatbox.')
+
 
 # 8. Modals, Support Widget & App Script
 modal_and_support_html = '''
@@ -473,7 +488,7 @@ modal_and_support_html = '''
 
       <!-- Poster CTA in Modal -->
       <div style="margin-bottom: 0.85rem;">
-        <button type="button" class="kat-btn-create-poster-highlight" id="btnOpenPosterFromModal" style="margin: 0; width: 100%;">
+        <button type="button" class="kat-btn-create-poster-highlight" id="btnOpenPosterFromModal" onclick="closeModal('katSuccessModal'); openPosterModal();" style="margin: 0; width: 100%;">
           🎨 TẠO POSTER THAM DỰ MANG TÊN BẠN NGAY
         </button>
       </div>
@@ -494,7 +509,7 @@ modal_and_support_html = '''
 <!-- ========================================================
      MODAL: TẠO POSTER THAM DỰ HỘI NGHỊ K.A.T 2026 (CANVAS ENGINE)
 ======================================================== -->
-<div class="kat-modal-overlay" id="katPosterModal" style="display: none;">
+<div class="kat-modal-overlay" id="katPosterModal">
   <div class="kat-poster-modal-dialog">
     <div class="kat-poster-modal-header">
       <div class="kat-poster-modal-title-wrap">
@@ -669,21 +684,8 @@ modal_and_support_html = '''
 </div>
 
 <!-- ========================================================
-     FLOATING ACTION BUTTONS: TẠO POSTER & TRỢ GIÚP TRỰC TUYẾN
+     ONLINE SUPPORT MODAL / WINDOW (ACCESSED VIA MOBILE NAV)
 ======================================================== -->
-<div class="kat-poster-floating-bubble" id="katPosterFloatingBubble" title="Tạo poster khách mời K.A.T 2026">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-    <circle cx="12" cy="13" r="4"></circle>
-  </svg>
-  <span style="font-weight: 700; font-size: 0.85rem;">Tạo Poster</span>
-</div>
-
-<div class="kat-support-bubble" id="katSupportBubble" title="Tư vấn & Hỗ trợ trực tuyến">
-  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  <span style="font-weight: 700; font-size: 0.85rem;">Tư vấn & Hỗ trợ</span>
-</div>
-
 <div class="kat-support-window" id="katSupportWindow">
   <div class="kat-support-header">
     <div style="display: flex; align-items: center; gap: 0.6rem;">

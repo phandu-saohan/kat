@@ -50,6 +50,8 @@ function showToast(message, type = 'info') {
 function openModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) {
+    modal.style.display = 'flex';
+    void modal.offsetWidth;
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -59,6 +61,7 @@ function closeModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) {
     modal.classList.remove('active');
+    modal.style.display = 'none';
     document.body.style.overflow = '';
   }
 }
@@ -69,8 +72,12 @@ function initModals() {
     btn.addEventListener('click', (e) => {
       const modal = e.target.closest('.kat-modal-overlay');
       if (modal) {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
+        if (modal.id) closeModal(modal.id);
+        else {
+          modal.classList.remove('active');
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
       }
     });
   });
@@ -79,8 +86,12 @@ function initModals() {
   document.querySelectorAll('.kat-modal-overlay').forEach(modal => {
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
+        if (modal.id) closeModal(modal.id);
+        else {
+          modal.classList.remove('active');
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
       }
     });
   });
@@ -647,7 +658,18 @@ function openPosterModalWithDelegate(delegate) {
   renderPosterCanvas();
 }
 window.openPosterModalWithDelegate = openPosterModalWithDelegate;
-window.openPosterModal = () => openPosterModalWithDelegate(null);
+window.openPosterModal = () => {
+  const nameEl = document.getElementById('inlineSuccessName') || document.getElementById('modalSumName');
+  const orgEl = document.getElementById('inlineSuccessOrg') || document.getElementById('modalSumOrg');
+  let del = null;
+  if (nameEl && nameEl.textContent && nameEl.textContent.trim() !== '--' && nameEl.textContent.trim() !== '') {
+    del = {
+      full_name: nameEl.textContent.trim(),
+      organization: orgEl && orgEl.textContent && orgEl.textContent.trim() !== '--' ? orgEl.textContent.trim() : ''
+    };
+  }
+  openPosterModalWithDelegate(del);
+};
 window.closePosterModal = () => closeModal('katPosterModal');
 
 // Render Canvas
@@ -1250,11 +1272,28 @@ function initPosterCreator() {
     });
   }
 
-  // Floating bubble button
+  // Floating bubble button (if exists)
   const floatingBubble = document.getElementById('katPosterFloatingBubble');
   if (floatingBubble) {
     floatingBubble.addEventListener('click', () => {
       openPosterModalWithDelegate(null);
+    });
+  }
+
+  // Direct trigger buttons
+  const btnSuccess = document.getElementById('btnOpenPosterFromSuccess');
+  if (btnSuccess) {
+    btnSuccess.addEventListener('click', (e) => {
+      e.preventDefault();
+      openPosterModal();
+    });
+  }
+  const btnModal = document.getElementById('btnOpenPosterFromModal');
+  if (btnModal) {
+    btnModal.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeModal('katSuccessModal');
+      openPosterModal();
     });
   }
 
