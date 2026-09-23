@@ -5,5 +5,6 @@ data/kat.sqlite-journal
 .vercel
 kat.html.html
 scratch/
+*.zip
 
 

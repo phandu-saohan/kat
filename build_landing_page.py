@@ -520,12 +520,39 @@ modal_and_support_html = '''
       <button type="button" class="kat-modal-close" id="btnClosePosterModal" style="font-size: 1.8rem; background: none; border: none; color: #ffffff; cursor: pointer;">&times;</button>
     </div>
 
+    <!-- Stepper Navigation Header (3 Bước) -->
+    <div class="kat-poster-stepper" id="katPosterStepper">
+      <button type="button" class="kat-stepper-btn active" data-step="1" id="stepTab1">
+        <span class="kat-stepper-num">1</span>
+        <span class="kat-stepper-info">
+          <span class="kat-stepper-sub">Bước 1</span>
+          <span class="kat-stepper-title">Chọn Tên</span>
+        </span>
+      </button>
+      <div class="kat-stepper-line"></div>
+      <button type="button" class="kat-stepper-btn" data-step="2" id="stepTab2">
+        <span class="kat-stepper-num">2</span>
+        <span class="kat-stepper-info">
+          <span class="kat-stepper-sub">Bước 2</span>
+          <span class="kat-stepper-title">Tải & Chỉnh Ảnh</span>
+        </span>
+      </button>
+      <div class="kat-stepper-line"></div>
+      <button type="button" class="kat-stepper-btn" data-step="3" id="stepTab3">
+        <span class="kat-stepper-num">3</span>
+        <span class="kat-stepper-info">
+          <span class="kat-stepper-sub">Bước 3</span>
+          <span class="kat-stepper-title">Mix & Chia Sẻ</span>
+        </span>
+      </button>
+    </div>
+
     <div class="kat-poster-modal-body">
       <!-- Cột trái: Các bước tùy chỉnh -->
       <div class="kat-poster-controls-col">
         
-        <!-- BƯỚC 1 -->
-        <div class="kat-poster-step-card">
+        <!-- BƯỚC 1: CHỌN TÊN TRONG DANH SÁCH ĐĂNG KÝ -->
+        <div class="kat-poster-step-card kat-active-step" id="katPosterStep1">
           <div class="kat-poster-step-head">
             <span class="kat-step-badge">BƯỚC 1</span>
             <h4>Chọn Đại Biểu & Thông Tin Tham Dự</h4>
@@ -534,11 +561,11 @@ modal_and_support_html = '''
           <!-- Searchable Dropdown -->
           <div class="kat-poster-search-wrap">
             <label class="kat-label" for="delegateSearchInput" style="font-size: 0.8rem; margin-bottom: 0.35rem;">
-              <span>Tìm kiếm đại biểu đã đăng ký:</span>
+              <span>🔍 Tìm kiếm đại biểu trong danh sách đăng ký:</span>
             </label>
             <div class="kat-search-input-box">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="text" id="delegateSearchInput" class="kat-field" placeholder="🔍 Gõ tên hoặc mã đại biểu để tìm kiếm..." autocomplete="off">
+              <input type="text" id="delegateSearchInput" class="kat-field" placeholder="Gõ tên hoặc mã đại biểu để tìm kiếm..." autocomplete="off">
               <button type="button" id="btnClearDelegateSearch" class="kat-btn-clear-search" style="display:none;" title="Xóa tìm kiếm">&times;</button>
             </div>
             <div id="delegateDropdownMenu" class="kat-delegate-dropdown" style="display: none;"></div>
@@ -550,7 +577,7 @@ modal_and_support_html = '''
                 <span>Họ và tên Đại biểu:</span>
               </label>
               <input type="text" id="posterFullName" class="kat-field" placeholder="VD: MS. THẮM NGUYỄN" value="MS. THẮM NGUYỄN">
-              <small style="color: #59d7ff; font-size: 0.72rem; margin-top: 3px;">Tự động viết hoa & in đậm trên poster</small>
+              <small style="color: #59d7ff; font-size: 0.72rem; margin-top: 3px;">Tự động viết hoa & căn giữa trên poster</small>
             </div>
 
             <div class="kat-input-group">
@@ -561,10 +588,18 @@ modal_and_support_html = '''
               <small style="color: #92b8d9; font-size: 0.72rem; margin-top: 3px;">Hiển thị dưới họ tên</small>
             </div>
           </div>
+
+          <!-- Step 1 Next Button -->
+          <div class="kat-step-action-bar">
+            <button type="button" class="kat-btn-step-next" id="btnGoToStep2">
+              <span>Tiếp tục: Tải & Chỉnh ảnh</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
         </div>
 
-        <!-- BƯỚC 2 -->
-        <div class="kat-poster-step-card">
+        <!-- BƯỚC 2: UPLOAD & CHỈNH SỬA ẢNH CHÂN DUNG -->
+        <div class="kat-poster-step-card" id="katPosterStep2" style="display: none;">
           <div class="kat-poster-step-head">
             <span class="kat-step-badge">BƯỚC 2</span>
             <h4>Tải & Điều Chỉnh Ảnh Chân Dung</h4>
@@ -623,14 +658,42 @@ modal_and_support_html = '''
                 Đổi ảnh
               </button>
             </div>
+
+            <div style="margin-top: 0.65rem; font-size: 0.73rem; color: #59d7ff; text-align: center;">
+              👆 <em>Bạn có thể vuốt/kéo chuột trực tiếp trên ảnh xem trước để di chuyển ảnh khớp khung.</em>
+            </div>
+          </div>
+
+          <!-- Step 2 Navigation Action Bar -->
+          <div class="kat-step-action-bar kat-step-action-between">
+            <button type="button" class="kat-btn-step-back" id="btnBackToStep1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+              <span>Quay lại Bước 1</span>
+            </button>
+            <button type="button" class="kat-btn-step-next" id="btnGoToStep3">
+              <span>Tiếp tục: Mix & Chia sẻ</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
           </div>
         </div>
 
-        <!-- BƯỚC 3 -->
-        <div class="kat-poster-step-card kat-poster-step-card-active">
+        <!-- BƯỚC 3: MIX & CHIA SẺ QUA ZALO / FB -->
+        <div class="kat-poster-step-card kat-poster-step-card-active" id="katPosterStep3" style="display: none;">
           <div class="kat-poster-step-head">
             <span class="kat-step-badge kat-badge-glow">BƯỚC 3</span>
-            <h4>Tải Về & Chia Sẻ Poster</h4>
+            <h4>Mix & Chia Sẻ Poster Hội Nghị</h4>
+          </div>
+
+          <!-- Delegate Summary Card -->
+          <div class="kat-step3-summary-card">
+            <div class="kat-step3-summary-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#00d084" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <div>
+              <div class="kat-step3-summary-title">Poster K.A.T 2026 Đã Hoàn Tất!</div>
+              <div class="kat-step3-summary-name" id="posterStep3Name">MS. THẮM NGUYỄN</div>
+              <div class="kat-step3-summary-org" id="posterStep3Org">Master Beauty Connect</div>
+            </div>
           </div>
 
           <!-- Main Download CTA -->
@@ -653,6 +716,18 @@ modal_and_support_html = '''
           </div>
           
           <div id="posterShareAlert" class="kat-share-toast" style="display: none;"></div>
+
+          <!-- Secondary Link Actions -->
+          <div class="kat-step3-footer-links">
+            <button type="button" class="kat-btn-link-action" id="btnBackToEditPhoto">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <span>Chỉnh sửa lại ảnh</span>
+            </button>
+            <button type="button" class="kat-btn-link-action" id="btnBackToChangeName">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Đổi tên đại biểu</span>
+            </button>
+          </div>
         </div>
 
       </div>

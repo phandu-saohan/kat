@@ -2,14 +2,15 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('node:path');
+const fs = require('node:fs');
 const db = require('./db/database');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '25mb' }));
+app.use(express.urlencoded({ extended: true, limit: '25mb' }));
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -461,6 +462,119 @@ app.get('/api/admin/export/:type', adminAuth, async (req, res) => {
   } catch (err) {
     console.error('Error exporting CSV:', err);
     res.status(500).json({ success: false, message: 'Lỗi xuất file CSV' });
+  }
+});
+
+// ==========================================
+// ADMIN: POSTER TEMPLATE MANAGEMENT
+// ==========================================
+
+// 1. Get current poster template information
+app.get('/api/admin/poster-template-info', adminAuth, (req, res) => {
+  try {
+    const imagesDir = path.join(__dirname, 'public', 'images');
+    const templatePath = path.join(imagesDir, 'poster_template.jpg');
+    const defaultPath = path.join(imagesDir, 'poster_template_default.jpg');
+
+    if (!fs.existsSync(templatePath)) {
+      return res.status(404).json({ success: false, message: 'Chưa có file mẫu poster' });
+    }
+
+    const stats = fs.statSync(templatePath);
+    const defaultAvailable = fs.existsSync(defaultPath);
+
+    return res.json({
+      success: true,
+      url: `/images/poster_template.jpg?t=${stats.mtimeMs}`,
+      size: stats.size,
+      mtime: stats.mtime,
+      defaultAvailable
+    });
+  } catch (err) {
+    console.error('Error getting poster template info:', err);
+    return res.status(500).json({ success: false, message: 'Lỗi đọc thông tin mẫu poster' });
+  }
+});
+
+// 2. Upload / Update poster template image
+app.post('/api/admin/poster-template', adminAuth, (req, res) => {
+  try {
+    const { imageBase64 } = req.body;
+    if (!imageBase64 || typeof imageBase64 !== 'string') {
+      return res.status(400).json({ success: false, message: 'Dữ liệu hình ảnh không hợp lệ' });
+    }
+
+    // Extract raw base64 data if data URL scheme is present
+    const matches = imageBase64.match(/^data:image\/([a-zA-Z0-9+]+);base64,(.+)$/);
+    let rawData = imageBase64;
+    if (matches && matches[2]) {
+      rawData = matches[2];
+    }
+
+    const buffer = Buffer.from(rawData, 'base64');
+    if (buffer.length < 500) {
+      return res.status(400).json({ success: false, message: 'Dữ liệu ảnh quá nhỏ hoặc file bị lỗi.' });
+    }
+    if (buffer.length > 25 * 1024 * 1024) {
+      return res.status(400).json({ success: false, message: 'Dung lượng ảnh vượt quá giới hạn 25MB.' });
+    }
+
+    const imagesDir = path.join(__dirname, 'public', 'images');
+    const templatePath = path.join(imagesDir, 'poster_template.jpg');
+    const backupPath = path.join(imagesDir, 'poster_template_backup.jpg');
+    const defaultPath = path.join(imagesDir, 'poster_template_default.jpg');
+
+    // Ensure default exists for safe rollback
+    if (!fs.existsSync(defaultPath) && fs.existsSync(templatePath)) {
+      fs.copyFileSync(templatePath, defaultPath);
+    }
+
+    // Backup current before overwrite
+    if (fs.existsSync(templatePath)) {
+      fs.copyFileSync(templatePath, backupPath);
+    }
+
+    // Write new template
+    fs.writeFileSync(templatePath, buffer);
+
+    const stats = fs.statSync(templatePath);
+    return res.json({
+      success: true,
+      message: 'Cập nhật mẫu poster thành công!',
+      url: `/images/poster_template.jpg?t=${stats.mtimeMs}`,
+      size: stats.size,
+      mtime: stats.mtime
+    });
+  } catch (err) {
+    console.error('Error saving poster template:', err);
+    return res.status(500).json({ success: false, message: 'Lỗi lưu file mẫu poster trên máy chủ' });
+  }
+});
+
+// 3. Restore default poster template
+app.post('/api/admin/poster-template/restore', adminAuth, (req, res) => {
+  try {
+    const imagesDir = path.join(__dirname, 'public', 'images');
+    const templatePath = path.join(imagesDir, 'poster_template.jpg');
+    const defaultPath = path.join(imagesDir, 'poster_template_default.jpg');
+
+    if (!fs.existsSync(defaultPath)) {
+      return res.status(404).json({ success: false, message: 'Không tìm thấy file mẫu poster gốc mặc định' });
+    }
+
+    fs.copyFileSync(defaultPath, templatePath);
+    const stats = fs.statSync(templatePath);
+
+    return res.json({
+      success: true,
+      message: 'Đã khôi phục về mẫu poster gốc ban đầu thành công!',
+      url: `/images/poster_template.jpg?t=${stats.mtimeMs}`,
+      size: stats.size,
+      mtime: stats.mtime
+    });
+  } catch (err) {
+    console.error('Error restoring poster template:', err);
+    return res.status(500).json({ success: false, message: 'Lỗi khôi phục mẫu poster' });
   }
 });
 

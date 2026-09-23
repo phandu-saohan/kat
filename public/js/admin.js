@@ -174,7 +174,8 @@ function switchTab(tabId) {
     tabOverview: 'Tổng Quan Dữ Liệu',
     tabRegistrations: 'Quản Lý Đăng Ký Tham Dự K.A.T 2026',
     tabNewsletters: 'Quản Lý Nhận Tin Email (Newsletter)',
-    tabSupport: 'Quản Lý Yêu Cầu Hỗ Trợ Trực Tuyến'
+    tabSupport: 'Quản Lý Yêu Cầu Hỗ Trực Tuyến',
+    tabPoster: 'Quản Lý & Thay Đổi Mẫu Poster K.A.T 2026'
   };
 
   const headingEl = document.getElementById('pageHeading');
@@ -184,6 +185,7 @@ function switchTab(tabId) {
   if (tabId === 'tabRegistrations') loadRegistrations();
   if (tabId === 'tabNewsletters') loadNewsletters();
   if (tabId === 'tabSupport') loadSupportTickets();
+  if (tabId === 'tabPoster') loadPosterConfig();
 }
 
 // ==========================================
@@ -627,6 +629,9 @@ function initEventHandlers() {
   // Save modal buttons
   document.getElementById('btnSaveRegModal')?.addEventListener('click', saveRegModal);
   document.getElementById('btnSaveSupportModal')?.addEventListener('click', saveSupportModal);
+
+  // Poster Template Handlers
+  initPosterTemplateHandlers();
 }
 
 // ==========================================
@@ -840,6 +845,250 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
+// ==========================================
+// POSTER TEMPLATE MANAGEMENT
+// ==========================================
+let currentSelectedPosterDataUrl = null;
+
+async function loadPosterConfig() {
+  const currentImg = document.getElementById('currentPosterPreview');
+  const infoEl = document.getElementById('currentPosterInfo');
+  const mtimeEl = document.getElementById('currentPosterMtime');
+  const viewFullBtn = document.getElementById('btnViewFullCurrentPoster');
+
+  try {
+    const res = await authFetch('/api/admin/poster-template-info');
+    const data = await res.json();
+    if (data.success) {
+      if (currentImg) {
+        currentImg.src = data.url;
+      }
+      if (viewFullBtn) {
+        viewFullBtn.href = data.url;
+      }
+      if (infoEl) {
+        const kb = (data.size / 1024).toFixed(1);
+        infoEl.innerHTML = `<strong>Dung lượng:</strong> ${kb} KB`;
+      }
+      if (mtimeEl) {
+        mtimeEl.innerHTML = `<strong>Cập nhật lần cuối:</strong> ${formatDateTime(data.mtime)}`;
+      }
+    }
+  } catch (err) {
+    console.error('Error loading poster config:', err);
+  }
+}
+
+function initPosterTemplateHandlers() {
+  const dropzone = document.getElementById('posterDropzone');
+  const fileInput = document.getElementById('posterFileInput');
+  const previewWrapper = document.getElementById('newPosterPreviewWrapper');
+  const previewImg = document.getElementById('newPosterPreviewImg');
+  const fileMeta = document.getElementById('newPosterFileMeta');
+  const btnSave = document.getElementById('btnSavePosterTemplate');
+  const btnClear = document.getElementById('btnClearNewPosterPreview');
+  const btnRestore = document.getElementById('btnRestorePosterTemplate');
+  const badgeStatus = document.getElementById('badgeUploadStatus');
+  const alertBox = document.getElementById('posterUploadAlert');
+
+  function showPosterAlert(msg, type = 'success') {
+    if (!alertBox) return;
+    alertBox.style.display = 'block';
+    if (type === 'success') {
+      alertBox.style.background = 'rgba(0, 208, 132, 0.15)';
+      alertBox.style.border = '1px solid rgba(0, 208, 132, 0.4)';
+      alertBox.style.color = '#00d084';
+    } else {
+      alertBox.style.background = 'rgba(207, 46, 46, 0.15)';
+      alertBox.style.border = '1px solid rgba(207, 46, 46, 0.4)';
+      alertBox.style.color = '#ff6b6b';
+    }
+    alertBox.innerHTML = msg;
+  }
+
+  function hidePosterAlert() {
+    if (alertBox) {
+      alertBox.style.display = 'none';
+      alertBox.innerHTML = '';
+    }
+  }
+
+  function resetNewPosterSelection() {
+    currentSelectedPosterDataUrl = null;
+    if (fileInput) fileInput.value = '';
+    if (previewImg) previewImg.src = '';
+    if (previewWrapper) previewWrapper.style.display = 'none';
+    if (fileMeta) fileMeta.innerHTML = '';
+    if (btnSave) {
+      btnSave.disabled = true;
+      btnSave.style.opacity = '0.5';
+      btnSave.style.cursor = 'not-allowed';
+    }
+    if (badgeStatus) {
+      badgeStatus.className = 'badge badge-pending';
+      badgeStatus.textContent = 'Chưa chọn ảnh';
+    }
+  }
+
+  function handlePosterFile(file) {
+    hidePosterAlert();
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      showPosterAlert('Vui lòng chọn file hình ảnh hợp lệ (JPG, PNG, WEBP).', 'error');
+      return;
+    }
+
+    if (file.size > 25 * 1024 * 1024) {
+      showPosterAlert('File ảnh vượt quá giới hạn 25MB.', 'error');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      const img = new Image();
+      img.onload = () => {
+        currentSelectedPosterDataUrl = dataUrl;
+        if (previewImg) previewImg.src = dataUrl;
+        if (previewWrapper) previewWrapper.style.display = 'block';
+
+        const sizeKb = (file.size / 1024).toFixed(1);
+        const dimensionText = `${img.naturalWidth} x ${img.naturalHeight} px`;
+        const isIdealRatio = Math.abs(img.naturalWidth / img.naturalHeight - 1024 / 960) < 0.05;
+
+        let warning = '';
+        if (!isIdealRatio) {
+          warning = `<span style="color: #fcb900; display: block; margin-top: 0.2rem;">⚠️ Tỉ lệ ảnh khác tỉ lệ chuẩn (1024x960), khi xuất có thể bị co giãn.</span>`;
+        }
+
+        if (fileMeta) {
+          fileMeta.innerHTML = `
+            <strong>File:</strong> ${escapeHtml(file.name)} (${sizeKb} KB)<br>
+            <strong>Độ phân giải:</strong> ${dimensionText} ${isIdealRatio ? '✅ (Tỉ lệ chuẩn)' : ''}
+            ${warning}
+          `;
+        }
+
+        if (btnSave) {
+          btnSave.disabled = false;
+          btnSave.style.opacity = '1';
+          btnSave.style.cursor = 'pointer';
+        }
+
+        if (badgeStatus) {
+          badgeStatus.className = 'badge badge-confirmed';
+          badgeStatus.textContent = 'Đã chọn ảnh mới';
+        }
+      };
+      img.src = dataUrl;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  if (dropzone && fileInput) {
+    dropzone.addEventListener('click', () => fileInput.click());
+    dropzone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = 'var(--admin-cyan)';
+      dropzone.style.background = 'rgba(89, 215, 255, 0.08)';
+    });
+    dropzone.addEventListener('dragleave', () => {
+      dropzone.style.borderColor = 'rgba(197, 161, 90, 0.4)';
+      dropzone.style.background = 'rgba(197, 161, 90, 0.03)';
+    });
+    dropzone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzone.style.borderColor = 'rgba(197, 161, 90, 0.4)';
+      dropzone.style.background = 'rgba(197, 161, 90, 0.03)';
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handlePosterFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) {
+        handlePosterFile(e.target.files[0]);
+      }
+    });
+  }
+
+  if (btnClear) {
+    btnClear.addEventListener('click', resetNewPosterSelection);
+  }
+
+  // Save new poster template
+  if (btnSave) {
+    btnSave.addEventListener('click', async () => {
+      if (!currentSelectedPosterDataUrl) {
+        showPosterAlert('Vui lòng chọn ảnh mẫu poster trước khi lưu.', 'error');
+        return;
+      }
+
+      hidePosterAlert();
+      btnSave.disabled = true;
+      btnSave.style.opacity = '0.7';
+      const originalText = btnSave.innerHTML;
+      btnSave.innerHTML = `
+        <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-opacity="1"/></svg>
+        Đang tải lên &amp; áp dụng...
+      `;
+
+      try {
+        const res = await authFetch('/api/admin/poster-template', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageBase64: currentSelectedPosterDataUrl })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showPosterAlert('🎉 ' + data.message, 'success');
+          resetNewPosterSelection();
+          await loadPosterConfig();
+        } else {
+          showPosterAlert('Lỗi: ' + (data.message || 'Không thể lưu mẫu poster'), 'error');
+        }
+      } catch (err) {
+        console.error('Error saving poster template:', err);
+        showPosterAlert('Lỗi kết nối máy chủ khi lưu mẫu poster.', 'error');
+      } finally {
+        btnSave.disabled = false;
+        btnSave.innerHTML = originalText;
+      }
+    });
+  }
+
+  // Restore default poster template
+  if (btnRestore) {
+    btnRestore.addEventListener('click', async () => {
+      if (!confirm('Bạn có chắc chắn muốn khôi phục về mẫu poster chuẩn ban đầu của Ban tổ chức?')) {
+        return;
+      }
+
+      hidePosterAlert();
+      try {
+        const res = await authFetch('/api/admin/poster-template/restore', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          showPosterAlert('🔄 ' + data.message, 'success');
+          resetNewPosterSelection();
+          await loadPosterConfig();
+        } else {
+          showPosterAlert('Lỗi: ' + (data.message || 'Không thể khôi phục mẫu poster'), 'error');
+        }
+      } catch (err) {
+        console.error('Error restoring poster template:', err);
+        showPosterAlert('Lỗi kết nối máy chủ khi khôi phục mẫu poster.', 'error');
+      }
+    });
+  }
+}
+
 window.switchTab = switchTab;
 window.openRegDetail = openRegDetail;
 window.openSupportDetail = openSupportDetail;
@@ -847,3 +1096,4 @@ window.closeAdminModal = closeAdminModal;
 window.deleteReg = deleteReg;
 window.deleteNewsletter = deleteNewsletter;
 window.deleteSupportTicket = deleteSupportTicket;
+window.loadPosterConfig = loadPosterConfig;

@@ -620,6 +620,8 @@ function roundRectPath(ctx, x, y, width, height, radius) {
 
 let posterTemplateImg = null;
 let userPortraitImg = null;
+let currentPosterStep = 1;
+
 let posterState = {
   fullName: 'MS. THẮM NGUYỄN',
   organization: 'Master Beauty Connect',
@@ -633,6 +635,56 @@ let posterState = {
   initialPanX: 0,
   initialPanY: 0
 };
+
+// Wizard Step Navigation (Bước 1: Chọn Tên -> Bước 2: Tải & Chỉnh Ảnh -> Bước 3: Mix & Chia Sẻ)
+function setPosterStep(step) {
+  step = Math.max(1, Math.min(3, parseInt(step, 10) || 1));
+  currentPosterStep = step;
+
+  // 1. Update Stepper Tabs
+  for (let s = 1; s <= 3; s++) {
+    const tab = document.getElementById(`stepTab${s}`);
+    const panel = document.getElementById(`katPosterStep${s}`);
+    if (tab) {
+      if (s === step) {
+        tab.classList.add('active');
+        tab.classList.remove('completed');
+      } else if (s < step) {
+        tab.classList.remove('active');
+        tab.classList.add('completed');
+      } else {
+        tab.classList.remove('active');
+        tab.classList.remove('completed');
+      }
+    }
+    if (panel) {
+      if (s === step) {
+        panel.style.display = 'block';
+        panel.classList.add('kat-active-step');
+      } else {
+        panel.style.display = 'none';
+        panel.classList.remove('kat-active-step');
+      }
+    }
+  }
+
+  // 2. Step 3 Summary info update
+  if (step === 3) {
+    const sumName = document.getElementById('posterStep3Name');
+    const sumOrg = document.getElementById('posterStep3Org');
+    if (sumName) sumName.textContent = (posterState.fullName || '').trim().toUpperCase() || 'QUÝ ĐẠI BIỂU';
+    if (sumOrg) sumOrg.textContent = (posterState.organization || '').trim() || 'Hội thảo khoa học quốc tế K.A.T 2026';
+  }
+
+  // 3. Scroll modal body to top smoothly on mobile
+  const modalBody = document.querySelector('.kat-poster-modal-body');
+  if (modalBody && window.innerWidth <= 900) {
+    modalBody.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderPosterCanvas();
+}
+window.setPosterStep = setPosterStep;
 
 // Open poster modal and optionally prefill with a delegate
 function openPosterModalWithDelegate(delegate) {
@@ -653,6 +705,9 @@ function openPosterModalWithDelegate(delegate) {
       const clearBtn = document.getElementById('btnClearDelegateSearch');
       if (clearBtn) clearBtn.style.display = 'block';
     }
+    setPosterStep(2); // If delegate prefilled, jump directly to photo upload step
+  } else {
+    setPosterStep(1); // Default to Step 1
   }
   openModal('katPosterModal');
   renderPosterCanvas();
@@ -694,11 +749,11 @@ function renderPosterCanvas() {
     ctx.fillRect(0, 0, 1024, 960);
   }
 
-  // 2. Portrait Box coordinates (Pixel-perfect matching Hình 1 & Hình 2)
-  const boxX = 757;
+  // 2. Portrait Box coordinates (Pixel-perfect matching new template: X: 734, Y: 124, W: 196, H: 203)
+  const boxX = 734;
   const boxY = 124;
-  const boxW = 170;
-  const boxH = 204;
+  const boxW = 196;
+  const boxH = 203;
   const radius = 14;
 
   // Draw User Portrait
@@ -708,10 +763,10 @@ function renderPosterCanvas() {
     ctx.clip();
 
     // Dark background for clipping box
-    ctx.fillStyle = '#06132b';
+    ctx.fillStyle = '#020713';
     ctx.fillRect(boxX, boxY, boxW, boxH);
 
-    // Center of portrait frame
+    // Center of portrait frame (832, 225.5)
     const cx = boxX + boxW / 2;
     const cy = boxY + boxH / 2;
 
@@ -727,18 +782,18 @@ function renderPosterCanvas() {
     ctx.drawImage(userPortraitImg, -drawW / 2, -drawH / 2, drawW, drawH);
     ctx.restore();
 
-    // Draw Glowing Neon Border
+    // Glowing Neon Border matching frame
     ctx.save();
-    ctx.strokeStyle = '#52e5ff';
+    ctx.strokeStyle = 'rgba(82, 229, 255, 0.75)';
     ctx.lineWidth = 2.5;
     ctx.shadowColor = '#00e1ff';
-    ctx.shadowBlur = 12;
+    ctx.shadowBlur = 10;
     roundRectPath(ctx, boxX, boxY, boxW, boxH, radius);
     ctx.stroke();
     ctx.restore();
   }
 
-  // 3. Render Field 1: Họ và tên Đại biểu (Line 1)
+  // 3. Render Field 1: Họ và tên Đại biểu (Line 1, Center X: 832, Center Y: 368)
   const fullName = (posterState.fullName || '').trim().toUpperCase();
   if (fullName) {
     ctx.save();
@@ -749,7 +804,7 @@ function renderPosterCanvas() {
     let fontSize = 22;
     ctx.font = `bold ${fontSize}px "Plus Jakarta Sans", "Inter", -apple-system, sans-serif`;
     let textWidth = ctx.measureText(fullName).width;
-    const maxTextWidth = 265;
+    const maxTextWidth = 275;
 
     while (textWidth > maxTextWidth && fontSize > 13) {
       fontSize -= 1;
@@ -762,11 +817,11 @@ function renderPosterCanvas() {
     ctx.shadowBlur = 8;
     ctx.shadowOffsetY = 2;
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillText(fullName, 841.5, 372);
+    ctx.fillText(fullName, 832, 368);
     ctx.restore();
   }
 
-  // 4. Render Field 2: Đơn vị công tác (Line 2)
+  // 4. Render Field 2: Đơn vị công tác (Line 2, Center X: 832, Center Y: 402)
   const org = (posterState.organization || '').trim();
   if (org) {
     ctx.save();
@@ -777,7 +832,7 @@ function renderPosterCanvas() {
     let orgFontSize = 15;
     ctx.font = `600 ${orgFontSize}px "Plus Jakarta Sans", "Inter", -apple-system, sans-serif`;
     let orgWidth = ctx.measureText(org).width;
-    const maxOrgWidth = 270;
+    const maxOrgWidth = 275;
 
     while (orgWidth > maxOrgWidth && orgFontSize > 11) {
       orgFontSize -= 1;
@@ -790,7 +845,7 @@ function renderPosterCanvas() {
     ctx.shadowBlur = 6;
     ctx.shadowOffsetY = 1;
     ctx.fillStyle = '#8ce8ff';
-    ctx.fillText(org, 841.5, 405);
+    ctx.fillText(org, 832, 402);
     ctx.restore();
   }
 }
@@ -1074,17 +1129,44 @@ function initPosterPhotoTools() {
     });
     window.addEventListener('mouseup', endDrag);
 
+    // Touch Drag & Pinch-to-Zoom
+    let touchInitialDist = 0;
+    let touchInitialZoom = 1.0;
+
     canvas.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
         startDrag(e.touches[0].clientX, e.touches[0].clientY);
+      } else if (e.touches.length === 2 && userPortraitImg) {
+        posterState.isDragging = false;
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        touchInitialDist = Math.hypot(dx, dy);
+        touchInitialZoom = posterState.zoom;
       }
     }, { passive: true });
+
     window.addEventListener('touchmove', (e) => {
       if (e.touches && e.touches.length === 1) {
         doDrag(e.touches[0].clientX, e.touches[0].clientY);
+      } else if (e.touches && e.touches.length === 2 && userPortraitImg && touchInitialDist > 0) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const dist = Math.hypot(dx, dy);
+        const factor = dist / touchInitialDist;
+        let newZoom = Math.max(0.4, Math.min(3.5, Math.round(touchInitialZoom * factor * 100) / 100));
+        posterState.zoom = newZoom;
+        if (zoomSlider) zoomSlider.value = newZoom;
+        if (zoomVal) zoomVal.textContent = newZoom.toFixed(2) + 'x';
+        renderPosterCanvas();
       }
     }, { passive: true });
-    window.addEventListener('touchend', endDrag);
+
+    window.addEventListener('touchend', (e) => {
+      if (!e.touches || e.touches.length === 0) {
+        endDrag();
+        touchInitialDist = 0;
+      }
+    });
   }
 }
 
@@ -1251,11 +1333,10 @@ function initPosterSharing() {
   }
 }
 
-// Master Poster Initializer
-function initPosterCreator() {
-  // Load template image
+// Poster Template Loader with cache-busting
+function loadPosterTemplateImage() {
   const img = new Image();
-  img.src = '/images/poster_template.jpg';
+  img.src = '/images/poster_template.jpg?v=' + Date.now();
   img.onload = () => {
     posterTemplateImg = img;
     renderPosterCanvas();
@@ -1263,6 +1344,12 @@ function initPosterCreator() {
   img.onerror = () => {
     console.warn('Could not load /images/poster_template.jpg');
   };
+}
+
+// Master Poster Initializer
+function initPosterCreator() {
+  // Load template image
+  loadPosterTemplateImage();
 
   // Close modal button
   const closeBtn = document.getElementById('btnClosePosterModal');
@@ -1300,5 +1387,42 @@ function initPosterCreator() {
   initPosterDelegateSearch();
   initPosterPhotoTools();
   initPosterSharing();
+
+  // Stepper Header Tabs
+  for (let s = 1; s <= 3; s++) {
+    const tab = document.getElementById(`stepTab${s}`);
+    if (tab) {
+      tab.addEventListener('click', () => {
+        setPosterStep(s);
+      });
+    }
+  }
+
+  // Next/Back Step Buttons
+  const btnGoToStep2 = document.getElementById('btnGoToStep2');
+  if (btnGoToStep2) {
+    btnGoToStep2.addEventListener('click', () => setPosterStep(2));
+  }
+  const btnBackToStep1 = document.getElementById('btnBackToStep1');
+  if (btnBackToStep1) {
+    btnBackToStep1.addEventListener('click', () => setPosterStep(1));
+  }
+  const btnGoToStep3 = document.getElementById('btnGoToStep3');
+  if (btnGoToStep3) {
+    btnGoToStep3.addEventListener('click', () => setPosterStep(3));
+  }
+  const btnBackToEditPhoto = document.getElementById('btnBackToEditPhoto');
+  if (btnBackToEditPhoto) {
+    btnBackToEditPhoto.addEventListener('click', () => setPosterStep(2));
+  }
+  const btnBackToChangeName = document.getElementById('btnBackToChangeName');
+  if (btnBackToChangeName) {
+    btnBackToChangeName.addEventListener('click', () => setPosterStep(1));
+  }
+
+  // Initial step setup
+  setPosterStep(1);
 }
+
+window.loadPosterTemplateImage = loadPosterTemplateImage;
 
