@@ -232,6 +232,77 @@ app.delete('/api/admin/registrations/:id', adminAuth, async (req, res) => {
   }
 });
 
+// Admin Export Registrations CSV
+app.get('/api/admin/export/registrations', adminAuth, async (req, res) => {
+  try {
+    const { status, search } = req.query;
+    const list = await db.getRegistrations({ status, search });
+
+    const headers = [
+      'STT',
+      'Mã Đăng Ký',
+      'Họ và Tên',
+      'Số Điện Thoại',
+      'Email',
+      'Đơn Vị Công Tác',
+      'Chuyên Khoa',
+      'Phiên Tham Dự Quan Tâm',
+      'Ghi Chú Đại Biểu',
+      'Ghi Chú Ban Thư Ký',
+      'Trạng Thái',
+      'Thời Gian Đăng Ký'
+    ];
+
+    const escapeCsv = (val) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/"/g, '""');
+      return `"${str}"`;
+    };
+
+    const statusMap = {
+      pending: 'Chờ xử lý',
+      contacted: 'Đã liên hệ',
+      confirmed: 'Đã xác nhận',
+      cancelled: 'Đã hủy'
+    };
+
+    const formatTime = (iso) => {
+      if (!iso) return '';
+      try {
+        const d = new Date(iso);
+        return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')} ${d.getDate().toString().padStart(2, '0')}/${(d.getMonth()+1).toString().padStart(2, '0')}/${d.getFullYear()}`;
+      } catch (e) {
+        return iso;
+      }
+    };
+
+    const rows = list.map((r, i) => [
+      i + 1,
+      escapeCsv(r.reg_code),
+      escapeCsv(r.full_name),
+      escapeCsv(r.phone),
+      escapeCsv(r.email),
+      escapeCsv(r.organization || ''),
+      escapeCsv(r.specialty || ''),
+      escapeCsv(r.interested_sessions || ''),
+      escapeCsv(r.notes || ''),
+      escapeCsv(r.admin_notes || ''),
+      escapeCsv(statusMap[r.status] || r.status),
+      escapeCsv(formatTime(r.created_at))
+    ].join(','));
+
+    // UTF-8 BOM (\uFEFF) for Excel compatibility
+    const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="KAT2026_DanhSachDangKy_${new Date().toISOString().slice(0, 10)}.csv"`);
+    res.send(csvContent);
+  } catch (err) {
+    console.error('Error in /api/admin/export/registrations:', err);
+    res.status(500).json({ success: false, message: 'Lỗi xuất file CSV.' });
+  }
+});
+
 // Admin Newsletters list
 app.get('/api/admin/newsletters', adminAuth, async (req, res) => {
   try {

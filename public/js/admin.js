@@ -629,6 +629,181 @@ function initEventHandlers() {
   document.getElementById('btnSaveSupportModal')?.addEventListener('click', saveSupportModal);
 }
 
+// ==========================================
+// EXPORT CSV UTILITIES (EXCEL UTF-8 COMPATIBLE)
+// ==========================================
+async function downloadExport(type) {
+  if (type === 'registrations') {
+    const status = document.getElementById('regStatusFilter')?.value || 'all';
+    const search = document.getElementById('regSearchInput')?.value.trim() || '';
+    const btn = document.getElementById('btnExportRegistrations');
+    const originalHtml = btn ? btn.innerHTML : 'Xuất Excel (CSV)';
+
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = `
+        <svg class="animate-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline-block; animation: spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke-opacity="1"/></svg>
+        Đang xuất CSV...
+      `;
+    }
+
+    try {
+      const params = new URLSearchParams();
+      if (status && status !== 'all') params.append('status', status);
+      if (search) params.append('search', search);
+
+      const res = await authFetch(`/api/admin/export/registrations?${params.toString()}`);
+      if (res.ok) {
+        const blob = await res.blob();
+        triggerDownload(blob, `KAT2026_DanhSachDangKy_${getDateStr()}.csv`);
+      } else {
+        // Fallback: client-side generation
+        await exportRegistrationsClientSide(status, search);
+      }
+    } catch (err) {
+      console.warn('Server export failed, using client-side fallback:', err);
+      await exportRegistrationsClientSide(status, search);
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+      }
+    }
+  } else if (type === 'newsletters') {
+    await exportNewslettersClientSide();
+  } else if (type === 'support') {
+    await exportSupportClientSide();
+  }
+}
+
+function escapeCsvField(val) {
+  if (val === null || val === undefined) return '""';
+  const str = String(val).replace(/"/g, '""');
+  return `"${str}"`;
+}
+
+function triggerDownload(blob, filename) {
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.style.display = 'none';
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 200);
+}
+
+function getDateStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+async function exportRegistrationsClientSide(status, search) {
+  const params = new URLSearchParams();
+  if (status && status !== 'all') params.append('status', status);
+  if (search) params.append('search', search);
+
+  const res = await authFetch(`/api/admin/registrations?${params.toString()}`);
+  const data = await res.json();
+  const list = data.data || [];
+
+  if (list.length === 0) {
+    alert('Không có dữ liệu đăng ký để xuất file.');
+    return;
+  }
+
+  const headers = [
+    'STT',
+    'Mã Đăng Ký',
+    'Họ và Tên',
+    'Số Điện Thoại',
+    'Email',
+    'Đơn Vị Công Tác',
+    'Chuyên Khoa',
+    'Phiên Tham Dự Quan Tâm',
+    'Ghi Chú Đại Biểu',
+    'Ghi Chú Ban Thư Ký',
+    'Trạng Thái',
+    'Thời Gian Đăng Ký'
+  ];
+
+  const statusMap = {
+    pending: 'Chờ xử lý',
+    contacted: 'Đã liên hệ',
+    confirmed: 'Đã xác nhận',
+    cancelled: 'Đã hủy'
+  };
+
+  const rows = list.map((r, i) => [
+    i + 1,
+    escapeCsvField(r.reg_code),
+    escapeCsvField(r.full_name),
+    escapeCsvField(r.phone),
+    escapeCsvField(r.email),
+    escapeCsvField(r.organization || ''),
+    escapeCsvField(r.specialty || ''),
+    escapeCsvField(r.interested_sessions || ''),
+    escapeCsvField(r.notes || ''),
+    escapeCsvField(r.admin_notes || ''),
+    escapeCsvField(statusMap[r.status] || r.status),
+    escapeCsvField(formatDateTime(r.created_at))
+  ].join(','));
+
+  // Prepend UTF-8 BOM (\uFEFF) so Excel on Windows recognizes Vietnamese fonts
+  const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  triggerDownload(blob, `KAT2026_DanhSachDangKy_${getDateStr()}.csv`);
+}
+
+async function exportNewslettersClientSide() {
+  const res = await authFetch('/api/admin/newsletters');
+  const data = await res.json();
+  const list = data.data || [];
+
+  const headers = ['STT', 'ID', 'Email', 'Nguồn Đăng Ký', 'Trạng Thái', 'Thời Gian'];
+  const rows = list.map((n, i) => [
+    i + 1,
+    n.id,
+    escapeCsvField(n.email),
+    escapeCsvField(n.source),
+    escapeCsvField(n.status === 'active' ? 'Đang hoạt động' : 'Hủy'),
+    escapeCsvField(formatDateTime(n.created_at))
+  ].join(','));
+
+  const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  triggerDownload(blob, `KAT2026_DanhSachNhanTin_${getDateStr()}.csv`);
+}
+
+async function exportSupportClientSide() {
+  const res = await authFetch('/api/admin/support-tickets');
+  const data = await res.json();
+  const list = data.data || [];
+
+  const headers = ['STT', 'Mã Ticket', 'Họ Tên', 'SĐT', 'Email', 'Chủ Đề', 'Nội Dung', 'Trạng Thái', 'Ghi Chú Ban Thư Ký', 'Thời Gian'];
+  const statusMap = { new: 'Mới', processing: 'Đang xử lý', resolved: 'Đã giải quyết' };
+
+  const rows = list.map((t, i) => [
+    i + 1,
+    escapeCsvField(t.ticket_code),
+    escapeCsvField(t.full_name),
+    escapeCsvField(t.phone || ''),
+    escapeCsvField(t.email),
+    escapeCsvField(t.topic),
+    escapeCsvField(t.message),
+    escapeCsvField(statusMap[t.status] || t.status),
+    escapeCsvField(t.admin_notes || ''),
+    escapeCsvField(formatDateTime(t.created_at))
+  ].join(','));
+
+  const csvContent = '\uFEFF' + [headers.join(','), ...rows].join('\r\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  triggerDownload(blob, `KAT2026_YeuCauHoTro_${getDateStr()}.csv`);
+}
+
 function renderStatusBadge(status) {
   const map = {
     pending: '<span class="badge badge-pending">Chờ xử lý</span>',
