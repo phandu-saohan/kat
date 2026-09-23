@@ -455,6 +455,31 @@ async function verifyAdmin(username, password) {
   return null;
 }
 
+// Public delegates search for poster creation
+async function getRegisteredDelegates(query = '') {
+  await initDb();
+  const cleanQ = (query || '').trim();
+  if (cleanQ) {
+    const res = await client.execute({
+      sql: `SELECT id, full_name, organization, reg_code 
+            FROM registrations 
+            WHERE full_name LIKE ? OR organization LIKE ? OR reg_code LIKE ?
+            ORDER BY id DESC 
+            LIMIT 50`,
+      args: [`%${cleanQ}%`, `%${cleanQ}%`, `%${cleanQ}%`]
+    });
+    return res.rows;
+  } else {
+    const res = await client.execute({
+      sql: `SELECT id, full_name, organization, reg_code 
+            FROM registrations 
+            ORDER BY id DESC 
+            LIMIT 50`
+    });
+    return res.rows;
+  }
+}
+
 module.exports = {
   client,
   initDb,
@@ -463,6 +488,7 @@ module.exports = {
   getRegistrationById,
   updateRegistration,
   deleteRegistration,
+  getRegisteredDelegates,
   subscribeNewsletter,
   getNewsletters,
   deleteNewsletter,
@@ -474,3 +500,4 @@ module.exports = {
   getDashboardStats,
   verifyAdmin
 };
+

@@ -361,6 +361,15 @@ pro_registration_html = '''
             </div>
 
             <!-- Action Buttons -->
+            <div style="margin-bottom: 0.85rem;">
+              <button type="button" class="kat-btn-create-poster-highlight" id="btnOpenPosterFromSuccess">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <span>🎨 TẠO POSTER THAM DỰ MANG TÊN BẠN NGAY</span>
+              </button>
+            </div>
             <div class="kat-success-actions">
               <button type="button" onclick="window.print()" class="kat-btn-outline-print">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
@@ -458,8 +467,15 @@ modal_and_support_html = '''
         </div>
       </div>
 
-      <div style="background: rgba(89, 215, 255, 0.08); border-radius: 0.65rem; padding: 0.75rem 1rem; font-size: 0.8rem; color: #c6efff; line-height: 1.5; text-align: left; margin-bottom: 1.25rem;">
+      <div style="background: rgba(89, 215, 255, 0.08); border-radius: 0.65rem; padding: 0.75rem 1rem; font-size: 0.8rem; color: #c6efff; line-height: 1.5; text-align: left; margin-bottom: 1rem;">
         Ban thư ký sẽ liên hệ qua điện thoại/Zalo trong vòng 24 giờ để hoàn tất thủ tục và gửi tài liệu chính thức. Hotline: <strong style="color: #59d7ff;">0909 123 456</strong>
+      </div>
+
+      <!-- Poster CTA in Modal -->
+      <div style="margin-bottom: 0.85rem;">
+        <button type="button" class="kat-btn-create-poster-highlight" id="btnOpenPosterFromModal" style="margin: 0; width: 100%;">
+          🎨 TẠO POSTER THAM DỰ MANG TÊN BẠN NGAY
+        </button>
       </div>
 
       <div style="display: flex; gap: 0.75rem;">
@@ -476,8 +492,193 @@ modal_and_support_html = '''
 </div>
 
 <!-- ========================================================
-     FLOATING ONLINE SUPPORT & NEWSLETTER WIDGET
+     MODAL: TẠO POSTER THAM DỰ HỘI NGHỊ K.A.T 2026 (CANVAS ENGINE)
 ======================================================== -->
+<div class="kat-modal-overlay" id="katPosterModal" style="display: none;">
+  <div class="kat-poster-modal-dialog">
+    <div class="kat-poster-modal-header">
+      <div class="kat-poster-modal-title-wrap">
+        <span class="kat-poster-badge">K.A.T 2026 OFFICIAL POSTER CREATOR</span>
+        <h3 class="kat-poster-title">Tạo Poster Khách Mời Hội Nghị K.A.T 2026</h3>
+        <p class="kat-poster-sub">Ghép ảnh chân dung, họ tên và đơn vị công tác vào poster chính thức của Hội thảo khoa học quốc tế K.A.T 2026.</p>
+      </div>
+      <button type="button" class="kat-modal-close" id="btnClosePosterModal" style="font-size: 1.8rem; background: none; border: none; color: #ffffff; cursor: pointer;">&times;</button>
+    </div>
+
+    <div class="kat-poster-modal-body">
+      <!-- Cột trái: Các bước tùy chỉnh -->
+      <div class="kat-poster-controls-col">
+        
+        <!-- BƯỚC 1 -->
+        <div class="kat-poster-step-card">
+          <div class="kat-poster-step-head">
+            <span class="kat-step-badge">BƯỚC 1</span>
+            <h4>Chọn Đại Biểu & Thông Tin Tham Dự</h4>
+          </div>
+
+          <!-- Searchable Dropdown -->
+          <div class="kat-poster-search-wrap">
+            <label class="kat-label" for="delegateSearchInput" style="font-size: 0.8rem; margin-bottom: 0.35rem;">
+              <span>Tìm kiếm đại biểu đã đăng ký:</span>
+            </label>
+            <div class="kat-search-input-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="delegateSearchInput" class="kat-field" placeholder="🔍 Gõ tên hoặc mã đại biểu để tìm kiếm..." autocomplete="off">
+              <button type="button" id="btnClearDelegateSearch" class="kat-btn-clear-search" style="display:none;" title="Xóa tìm kiếm">&times;</button>
+            </div>
+            <div id="delegateDropdownMenu" class="kat-delegate-dropdown" style="display: none;"></div>
+          </div>
+
+          <div class="kat-grid-2" style="margin-top: 0.85rem; gap: 0.75rem;">
+            <div class="kat-input-group">
+              <label class="kat-label" for="posterFullName" style="font-size: 0.78rem;">
+                <span>Họ và tên Đại biểu:</span>
+              </label>
+              <input type="text" id="posterFullName" class="kat-field" placeholder="VD: MS. THẮM NGUYỄN" value="MS. THẮM NGUYỄN">
+              <small style="color: #59d7ff; font-size: 0.72rem; margin-top: 3px;">Tự động viết hoa & in đậm trên poster</small>
+            </div>
+
+            <div class="kat-input-group">
+              <label class="kat-label" for="posterOrg" style="font-size: 0.78rem;">
+                <span>Đơn vị công tác:</span>
+              </label>
+              <input type="text" id="posterOrg" class="kat-field" placeholder="VD: Master Beauty Connect" value="Master Beauty Connect">
+              <small style="color: #92b8d9; font-size: 0.72rem; margin-top: 3px;">Hiển thị dưới họ tên</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- BƯỚC 2 -->
+        <div class="kat-poster-step-card">
+          <div class="kat-poster-step-head">
+            <span class="kat-step-badge">BƯỚC 2</span>
+            <h4>Tải & Điều Chỉnh Ảnh Chân Dung</h4>
+          </div>
+
+          <div class="kat-upload-area">
+            <input type="file" id="posterPhotoInput" accept="image/*" style="display: none;">
+            <button type="button" class="kat-btn-upload-photo" id="btnUploadPhoto">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span id="btnUploadPhotoText">📸 Tải ảnh chân dung từ thiết bị (hoặc chụp ảnh)</span>
+            </button>
+            <div style="font-size: 0.74rem; color: #92b8d9; margin-top: 0.4rem; text-align: center;">Hỗ trợ JPG, PNG, WEBP. Ảnh chân dung rõ mặt, thẳng góc sẽ đẹp nhất.</div>
+          </div>
+
+          <!-- Adjustment sliders & quick tools -->
+          <div id="posterAdjustTools" class="kat-adjust-tools">
+            <div class="kat-slider-row">
+              <label class="kat-slider-label">
+                <span>🔍 Phóng to / Thu nhỏ:</span>
+                <span id="zoomVal" style="color: #59d7ff; font-weight:700;">1.0x</span>
+              </label>
+              <div class="kat-slider-wrap">
+                <button type="button" class="kat-btn-step" id="btnZoomOut">-</button>
+                <input type="range" id="posterZoom" min="0.4" max="3.5" step="0.05" value="1.0" class="kat-range">
+                <button type="button" class="kat-btn-step" id="btnZoomIn">+</button>
+              </div>
+            </div>
+
+            <div class="kat-grid-2" style="gap: 0.6rem; margin-top: 0.6rem;">
+              <div class="kat-slider-row">
+                <label class="kat-slider-label">
+                  <span>↔️ Vị trí ngang (X):</span>
+                </label>
+                <input type="range" id="posterPanX" min="-180" max="180" step="1" value="0" class="kat-range">
+              </div>
+              <div class="kat-slider-row">
+                <label class="kat-slider-label">
+                  <span>↕️ Vị trí dọc (Y):</span>
+                </label>
+                <input type="range" id="posterPanY" min="-180" max="180" step="1" value="0" class="kat-range">
+              </div>
+            </div>
+
+            <!-- Quick action buttons -->
+            <div class="kat-quick-actions-row">
+              <button type="button" class="kat-btn-tool" id="btnRotatePoster">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                Xoay 90°
+              </button>
+              <button type="button" class="kat-btn-tool" id="btnResetPoster">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
+                Căn giữa
+              </button>
+              <button type="button" class="kat-btn-tool" id="btnChangePosterPhoto">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Đổi ảnh
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BƯỚC 3 -->
+        <div class="kat-poster-step-card kat-poster-step-card-active">
+          <div class="kat-poster-step-head">
+            <span class="kat-step-badge kat-badge-glow">BƯỚC 3</span>
+            <h4>Tải Về & Chia Sẻ Poster</h4>
+          </div>
+
+          <!-- Main Download CTA -->
+          <button type="button" id="btnDownloadPoster" class="kat-btn-download-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>TẢI POSTER VỀ MÁY (PNG NÉT CAO)</span>
+          </button>
+
+          <!-- Social Share Row -->
+          <div class="kat-share-buttons-grid">
+            <button type="button" id="btnShareZalo" class="kat-btn-share-zalo" title="Chia sẻ qua Zalo">
+              <span class="kat-zalo-icon">Zalo</span>
+              <span>Chia sẻ qua Zalo</span>
+            </button>
+
+            <button type="button" id="btnShareFB" class="kat-btn-share-fb" title="Chia sẻ qua Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <span>Chia sẻ Facebook</span>
+            </button>
+          </div>
+          
+          <div id="posterShareAlert" class="kat-share-toast" style="display: none;"></div>
+        </div>
+
+      </div>
+
+      <!-- Cột phải: Live Preview Canvas -->
+      <div class="kat-poster-preview-col">
+        <div class="kat-preview-card">
+          <div class="kat-preview-header">
+            <span class="kat-preview-title">Xem Trước Poster Thực Tế (HD 1024×960)</span>
+            <span class="kat-live-badge"><span class="kat-pulse-dot"></span> LIVE PREVIEW</span>
+          </div>
+
+          <div class="kat-canvas-container" id="katCanvasContainer">
+            <canvas id="katPosterCanvas" width="1024" height="960"></canvas>
+            <div id="katCanvasDragNotice" class="kat-drag-hint">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="5 9 2 12 5 15"/><polyline points="9 5 12 2 15 5"/><polyline points="15 19 12 22 9 19"/><polyline points="19 9 22 12 19 15"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg>
+              <span>Dùng chuột hoặc vuốt để kéo ảnh</span>
+            </div>
+          </div>
+
+          <div class="kat-preview-tip">
+            💡 <strong>Tự động tối ưu:</strong> Tên và đơn vị công tác sẽ tự động căn giữa và điều chỉnh kích thước để đảm bảo độ sắc nét cao nhất khi in ấn hoặc đăng mạng xã hội.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ========================================================
+     FLOATING ACTION BUTTONS: TẠO POSTER & TRỢ GIÚP TRỰC TUYẾN
+======================================================== -->
+<div class="kat-poster-floating-bubble" id="katPosterFloatingBubble" title="Tạo poster khách mời K.A.T 2026">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+    <circle cx="12" cy="13" r="4"></circle>
+  </svg>
+  <span style="font-weight: 700; font-size: 0.85rem;">Tạo Poster</span>
+</div>
+
 <div class="kat-support-bubble" id="katSupportBubble" title="Tư vấn & Hỗ trợ trực tuyến">
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
   <span style="font-weight: 700; font-size: 0.85rem;">Tư vấn & Hỗ trợ</span>

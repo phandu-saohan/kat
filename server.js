@@ -153,6 +153,24 @@ app.post('/api/support', async (req, res) => {
   }
 });
 
+// 4. Search Registered Delegates (Public endpoint for poster creation)
+app.get('/api/delegates', async (req, res) => {
+  try {
+    const q = req.query.q || '';
+    const delegates = await db.getRegisteredDelegates(q);
+    return res.json({
+      success: true,
+      delegates
+    });
+  } catch (err) {
+    console.error('Error in /api/delegates:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Không thể tải danh sách đại biểu.'
+    });
+  }
+});
+
 // ==========================================
 // ADMIN CMS APIS
 // ==========================================
