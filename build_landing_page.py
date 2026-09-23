@@ -583,6 +583,45 @@ modal_and_support_html = '''
   </div>
 </div>
 
+<!-- ========================================================
+     MOBILE BOTTOM NAVIGATION BAR (ĐĂNG KÝ, CHƯƠNG TRÌNH, TRỢ GIÚP 24/7)
+======================================================== -->
+<nav class="kat-mobile-bottom-nav" id="katMobileBottomNav" aria-label="Mobile Navigation">
+  <button type="button" class="kat-nav-item" id="btnNavSchedule" title="Xem lịch trình & chương trình chi tiết">
+    <div class="kat-nav-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+    </div>
+    <span class="kat-nav-label">Chương Trình</span>
+  </button>
+
+  <button type="button" class="kat-nav-item kat-nav-item-primary" id="btnNavRegister" title="Đăng ký tham dự K.A.T 2026">
+    <div class="kat-nav-icon kat-nav-icon-highlight">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+        <circle cx="8.5" cy="7" r="4"/>
+        <line x1="20" y1="8" x2="20" y2="14"/>
+        <line x1="23" y1="11" x2="17" y2="11"/>
+      </svg>
+    </div>
+    <span class="kat-nav-label">Đăng Ký</span>
+  </button>
+
+  <button type="button" class="kat-nav-item" id="btnNavSupport" title="Tư vấn & Trợ giúp trực tuyến 24/7">
+    <div class="kat-nav-icon" style="position: relative;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+      <span class="kat-nav-online-dot"></span>
+    </div>
+    <span class="kat-nav-label">Trợ Giúp 24/7</span>
+  </button>
+</nav>
+
 <!-- App Script -->
 <script src="/js/app.js"></script>
 '''

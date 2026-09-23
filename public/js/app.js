@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNewsletterForm();
   initSupportWidget();
   interceptRegisterButtons();
+  initMobileBottomNav();
 });
 
 // ==========================================
@@ -474,6 +475,76 @@ function initSupportWidget() {
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalText;
+        }
+      }
+    });
+  }
+}
+
+// ==========================================
+// MOBILE BOTTOM NAVIGATION (ĐĂNG KÝ, CHƯƠNG TRÌNH, TRỢ GIÚP 24/7)
+// ==========================================
+function initMobileBottomNav() {
+  const btnSchedule = document.getElementById('btnNavSchedule');
+  const btnRegister = document.getElementById('btnNavRegister');
+  const btnSupport = document.getElementById('btnNavSupport');
+  const supportWindow = document.getElementById('katSupportWindow');
+
+  // 1. CHƯƠNG TRÌNH
+  if (btnSchedule) {
+    btnSchedule.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (supportWindow) supportWindow.classList.remove('active');
+
+      const target = document.getElementById('kat-agenda') || document.getElementById('chuong-trinh');
+      if (target) {
+        const top = target.getBoundingClientRect().top + window.pageYOffset - 15;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+  }
+
+  // 2. ĐĂNG KÝ
+  if (btnRegister) {
+    btnRegister.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (supportWindow) supportWindow.classList.remove('active');
+
+      const regSection = document.getElementById('dang-ky-kat');
+      const regCard = document.getElementById('katMainRegCard');
+      const firstInput = document.getElementById('regFullName');
+      const inlineCard = document.getElementById('katInlineSuccessCard');
+
+      if (regSection) {
+        const top = regSection.getBoundingClientRect().top + window.pageYOffset - 15;
+        window.scrollTo({ top, behavior: 'smooth' });
+
+        if (regCard) {
+          regCard.classList.remove('kat-form-flash');
+          void regCard.offsetWidth;
+          regCard.classList.add('kat-form-flash');
+        }
+
+        setTimeout(() => {
+          if (firstInput && (!inlineCard || inlineCard.style.display === 'none')) {
+            firstInput.focus({ preventScroll: true });
+          }
+        }, 500);
+      }
+    });
+  }
+
+  // 3. TRỢ GIÚP 24/7
+  if (btnSupport) {
+    btnSupport.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (supportWindow) {
+        const isActive = supportWindow.classList.toggle('active');
+        if (isActive) {
+          const firstField = supportWindow.querySelector('input[name="full_name"]');
+          if (firstField) {
+            setTimeout(() => firstField.focus(), 300);
+          }
         }
       }
     });
